@@ -1,0 +1,24 @@
+screwdistance=31;
+heigthabovescrews=15;
+thickness=2.8;
+margin=4;
+nemaholeradius=2.2;
+sensorholedistance=18;
+sensorholeradius=0.9;
+sensorthickness=12;
+
+intersection(){
+difference(){
+union(){translate([0,0,heigthabovescrews/2])cube ([screwdistance+2*nemaholeradius+2*margin,thickness,heigthabovescrews+2*margin],center=true);
+translate([screwdistance/2,thickness,heigthabovescrews])sphere(thickness);
+    translate([-screwdistance/2,thickness,heigthabovescrews])sphere(thickness);
+translate([0,sensorthickness/2+thickness,heigthabovescrews+thickness/2])cube ([screwdistance+2*nemaholeradius+2*margin,sensorthickness+margin,thickness],center=true);
+}
+for (i=[-1:2:1]){
+    translate([i*screwdistance/2,0,0])rotate([90,0,0])cylinder(60,nemaholeradius,nemaholeradius,center=true); 
+    translate([i*sensorholedistance/2,sensorthickness+thickness/2,0])rotate([0,0,0])cylinder(60,sensorholeradius,sensorholeradius,center=true);
+    translate([0,0,heigthabovescrews+5])rotate([-45,0,0])cylinder(60,10,10,center=true);
+}
+}
+cylinder(60,20,20,center=true);
+}
