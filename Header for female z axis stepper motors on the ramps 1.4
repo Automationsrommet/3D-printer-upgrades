@@ -6,9 +6,9 @@ pindistance=2.54;
 pincollumns=2;
 pinrows=4;
 height=18;
-pinthickness=0.8;
-margin=0.3;
-knee=10;
+pinthickness=1;
+margin=0.4;
+knee=7;
 
 
 
@@ -25,7 +25,7 @@ for(j=[-pinrows/2+0.5:1:pinrows/2-0.5]){
 cube([pinthickness,pinthickness,2*height],center=true);
 color("red")cube([pinthickness+margin,pinthickness+margin,knee],center=true);
 translate([pinthickness*i,0,0])cube([pinthickness*2,pinthickness+margin,3],center=true);
-translate([0,0,knee/2+height/4])cube([pinthickness*2,pinthickness*2,height/2],center=true);
+translate([0,0,knee/2+height/2])cube([pinthickness*2,pinthickness*2,height],center=true);
 }
 }
 }
