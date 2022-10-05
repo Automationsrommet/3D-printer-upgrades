@@ -1,1 +1,58 @@
 //Reprap wilson has an amazing z-probe mechanic solution. I have to have it.
+
+
+//input parameters
+xcarriagelength=60;
+stickoutL=4;
+stickoutR=14;
+holedistance=30;
+holediameter=3;
+abovebed=15;
+rodlength=78;
+rodwidth=9;
+rodheight=7;
+sleevewall=1;
+margin=0.2;
+noches=9;
+noch=1;
+pitch=2;
+$fn=30;
+
+
+//bracket();
+//translate([-noches/2*pitch,20,(-rodheight-sleevewall)/2])rotate([90,0,0])linear_extrude(50)square([noch,rodheight/2],center=true); 
+//translate([0,20,-rodheight-sleevewall])rotate([90,0,0])linear_extrude(50)polygon([[-noch,0],[noch,0],[0,rodheight/2]]);
+//rod
+difference(){
+translate([0,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth-margin,rodheight-margin],center=true);
+ for(i=[-noches/2*pitch:2:noches/2*pitch]){ 
+     translate([i,20,-rodheight-sleevewall])rotate([90,0,0])linear_extrude(50)polygon([[-noch,0],[noch,0],[0,rodheight/2]]);
+    translate([-noches/2*pitch-noch/2,20,-rodheight-sleevewall])rotate([90,0,0])linear_extrude(50)square([noch,rodheight],center=true); 
+     translate([noches/2*pitch+noch/2,20,-rodheight-sleevewall])rotate([90,0,0])linear_extrude(50)square([noch,rodheight],center=true); 
+ }    
+}
+
+
+//mounting plate for X-carriage
+color("black")difference(){
+translate([0,2,xcarriagelength/2])cube([xcarriagelength,1,xcarriagelength],center=true);
+translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true); 
+ translate([-holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true);   
+}
+//Bondtech LGX extruder side-mounted 
+color("grey")translate([0,-20-3,20+5])cube([50,40,40],center=true);
+
+//bed
+color("red")translate([0,0,-abovebed])cube([70,70,0.5],center=true);
+module bracket(){
+//Mounting bracket
+color("green")difference(){
+    translate([0,0,2])cube([xcarriagelength,2,6],center=true);
+translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true); 
+ translate([-holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true);   
+}
+//rodsleeve
+color("green")difference(){
+    translate([0,0,-(rodheight+2*sleevewall)/2])cube([xcarriagelength,rodwidth+2*sleevewall,rodheight+2*sleevewall],center=true);
+translate([0,0,-(rodheight+2*sleevewall)/2])cube([xcarriagelength+1,rodwidth,rodheight],center=true);
+}}
