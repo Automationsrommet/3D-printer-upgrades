@@ -9,7 +9,7 @@ wander=5;
 holedistance=30;
 holediameter=3;
 abovebed=15;
-rodlength=60+stickoutL+stickoutR+wander;
+rodlength=xcarriagelength+stickoutL+stickoutR+wander;
 rodwidth=9;
 rodheight=6;
 sleevewall=0.9;
@@ -22,21 +22,35 @@ switchholedia=2.5;
 $fn=30;
 
 
-bracket();
+//bracket();
 switch();
-//rod
+arm();
+shoes();
+rod();
+plate();
+bed();
+//LGX();
+
+module rod(){
 color("orange")difference(){
-translate([(stickoutR-stickoutL)/2+wander,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth-margin,rodheight-margin],center=true);
+translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth-margin,rodheight-margin],center=true);
  for(i=[-noches/2*noch*2:2:noches/2*noch*2]){ 
      translate([i,20,-rodheight-sleevewall+1.5])rotate([90,0,0])linear_extrude(50)polygon([[-noch/2,rodheight/4],[-noch-margin,0],[-noch-4,-10],[noch+4,-10],[noch+margin,0],[noch/2,rodheight/4],[0,rodheight/3+margin*2]]);
     translate([-noches/2*noch*2-noch/2,20,-rodheight-sleevewall+1])rotate([90,5,0])linear_extrude(50)square([noch,rodheight],center=true); 
-     //translate([noches/2*noch*2+noch/2,20,-rodheight-sleevewall])rotate([90,-5,0])linear_extrude(50)square([noch,rodheight],center=true); 
- }    
+      
+ } 
+for(k=[0:noch:noches]){
+translate([-25+k,rodwidth/2+sleevewall/2,-rodheight/2-sleevewall])sphere(noch);
+translate([-25+k,-rodwidth/2-sleevewall/2,-rodheight/2-sleevewall])sphere(noch);  
+}
+//shoe holes
+translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*2,noch*4,16],center=true);
+translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*2,noch*4,16],center=true);
+}
 }
 
 
-
-//arm
+module arm(){
 difference(){
 translate([0,0,1.7]){
     difference(){
@@ -52,7 +66,7 @@ difference(){
 translate([-noches/2,0,-(rodheight+2*sleevewall+noch)])cube([noch*noches+2,rodwidth,rodheight/2-margin],center=true);
     translate([9.5/2-2.9-6,+switchholedistance/2,-2*rodheight-1])cylinder(95,switchholedia/2,switchholedia/2,center=true);
     translate([9.5/2-2.9-6,-switchholedistance/2,-2*rodheight-1])cylinder(95,switchholedia/2,switchholedia/2,center=true);  
-    translate([9.5/2-2.9-6,0,-2*rodheight+6])rotate([90,90,0])cylinder(95,switchholedia/2,switchholedia/2,center=true); 
+    translate([9.5/2-2.9-6,0,-2*rodheight+5.4])rotate([90,90,0])cylinder(95,switchholedia/2,switchholedia/2,center=true); 
     translate([-6,0,-2*rodheight-1])color("chocolate")
 cube([9.5,19.8,6.4],center=true);
 }
@@ -70,41 +84,58 @@ translate([-4.8,rodwidth/2,-rodheight*1.6])rotate([90,90,0])linear_extrude(rodwi
 cube([9.5,19.9,6.4],center=true); 
 }
 }
-translate([0,0,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(rodwidth*3,noch,noch,center=true);
+translate([0,0,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(rodwidth*3,noch+margin,noch+margin,center=true);
+}
 }
 
-//mounting plate for X-carriage
+module plate (){
 color("black")difference(){
 translate([0,2,xcarriagelength/2])cube([xcarriagelength,1,xcarriagelength],center=true);
 translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true); 
  translate([-holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true);   
 }
-//shoes
+}
+module shoes(){
+    color("purple")intersection(){
+    union(){
+translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*2,noch*4,16],center=true);
+translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*2-margin*2,noch*4-2*margin,16-margin],center=true);
+    
+    translate([-xcarriagelength/2-stickoutL+1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true); 
+    translate([+xcarriagelength/2+stickoutR+wander-1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true);
+    
+        }
+  translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth*9,rodheight*9],center=true);      
+    }      
+}
 
-
-//Bondtech LGX extruder side-mounted 
+module LGX(){//LGX extruder side-mounted 
 color("grey")translate([0,-20-3,20+5])cube([50,40,40],center=true);
+}
 
-//bed
-//color("red")translate([0,0,-abovebed])cube([70,70,0.5],center=true);
-
+module bed(){
+color("red")translate([0,0,-abovebed])cube([70,70,0.5],center=true);
+}
 module bracket(){
 color("green")difference(){
     translate([0,0,2])cube([xcarriagelength,2,6],center=true);
 translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true); 
  translate([-holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true);   
 }
-//rodsleeve
+
+//sleeve
 color("green")difference(){
     
     union(){
     translate([0,0,-(rodheight+2*sleevewall)/2])cube([xcarriagelength,rodwidth+2*sleevewall,rodheight+2*sleevewall],center=true);
    translate([0,6.3,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(3,noch*3,noch*5,center=true);
          translate([0,-6.3,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(3,noch*5,noch*3,center=true);
+    translate([-25,rodwidth/2+sleevewall/2,-rodheight/2-sleevewall])sphere(noch);translate([-25,-rodwidth/2-sleevewall/2,-rodheight/2-sleevewall])sphere(noch);    
         }
+translate([-25,20,-rodheight/2-sleevewall])rotate([90,-90,0])linear_extrude(50)polygon([[-noch/2,rodheight/4],[-noch*2-margin,0],[-noch*2,-10],[-noch*2+margin*2,-10],[-noch*2,0],[0,rodheight/3-margin*4],[noch*2,0],[noch*2-margin*2,-10],[noch*2,-10],[noch*2+margin,0],[noch/2,rodheight/4],[0,rodheight/3-margin*2]]);
 
 translate([0,0,-(rodheight+2*sleevewall)/2])cube([xcarriagelength+1,rodwidth,rodheight],center=true);
-translate([0,0,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(rodwidth*3,noch+margin,noch+margin,center=true);
+translate([0,0,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(rodwidth*3,noch,noch,center=true);
     
     translate([-4.5,0,-(rodheight+2*sleevewall)-noch/5])rotate([90,0,0])cylinder(rodwidth*3,noch*2-margin,noch*2+margin,center=true);
     translate([-3.5,0,-10])cube([16,rodwidth+margin,6.3],center=true);
