@@ -3,10 +3,10 @@
 
 //Input parameters
 pindistance=2.54;
-pincollumns=1;
+pincollumns=2;
 pinrows=6;
 height=18;
-pinthickness=0.95;
+pinthickness=0.99;
 margin=0.4;
 knee=7;
 
@@ -21,7 +21,7 @@ cube([pincollumns*pindistance+2*margin,(pinrows)*pindistance+2*margin,height],ce
 for(i=[-pincollumns/2:pincollumns:pincollumns/2]){
 for(j=[-pinrows/2+0.5:1:pinrows/2-0.5]){
     
-    translate([0*pindistance/2,j*pindistance,0]){
+    translate([i*pindistance/2,j*pindistance,0]){
 cube([pinthickness*1.3,pinthickness*1.3,2*height],center=true);
 color("red")cube([pinthickness+margin,pinthickness+margin,knee],center=true);
 translate([pinthickness*i,0,0])cube([pinthickness*2,pinthickness+margin,3],center=true);
