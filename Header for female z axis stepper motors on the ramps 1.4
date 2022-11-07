@@ -1,2 +1,31 @@
 // Header for female z axis stepper motors on the ramps 1.4
 
+//Input parameters
+pindistance=2.54;
+pincollumns=2;
+pinrows=4;
+height=12;
+pinthickness=0.99;
+margin=0.4;
+knee=6;
+
+
+
+
+difference(){
+    
+translate([0,0,3+margin])
+cube([pincollumns*pindistance+2*margin,(pinrows)*pindistance+2*margin,height],center=true);
+
+for(i=[-pincollumns/2:pincollumns:pincollumns/2]){
+for(j=[-pinrows/2+0.5:1:pinrows/2-0.5]){
+    
+    translate([i*pindistance/2,j*pindistance,0]){
+cube([pinthickness*1.7,pinthickness*1.7,2*height],center=true);
+color("red")cube([pinthickness+margin,pinthickness+margin,knee],center=true);
+translate([pinthickness*i,0,0])cube([pinthickness*2,pinthickness-margin,30],center=true);
+translate([0,0,knee])cube([pinthickness*2.1,pinthickness*2.1,height*1],center=true);
+}
+}
+}
+}
