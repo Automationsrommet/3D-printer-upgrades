@@ -1,5 +1,5 @@
 //x carriage reprap wilson style
-//in 6 parts; the carriage, belt-terminal, ABL-rod,ABL-arm and the two different ABL-shoes to hit x axis sides.
+//in 8 parts; the carriage, belt-terminal, ABL-rod,ABL-arm and the two different ABL-shoes to hit x axis sides. PartCoolingFanHolder and Cable Manager piece
 
 //input parameters
 xrod_distance=45; 
@@ -64,15 +64,19 @@ translate([33/2,12.5,-16])minkowski(){sphere(2); cylinder(10,4,2,center=true,$fn
     translate([20.8,21,-10.5])rotate([0,180,0])linear_extrude(5)text("for Bondtech LGX",3.8);
     translate([20.3,17,-10.5])rotate([0,180,0])linear_extrude(5)text("av Prusa, Wilson og Gerolf",2.5);
     translate([22,32.0,-0])rotate([-90,180,0])linear_extrude(5)text("Automationsrommet",3.6);
+    translate([07.5,32.0,-5])rotate([-90,180,0])linear_extrude(5)text("at github.com",3.6);
     translate([18,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
     translate([08,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
     translate([-14,-37.5,5])linear_extrude(5)text("ABL Z-PROBE",3.1);
-   translate([-23.0,21,-10])rotate([90,0,-90])linear_extrude(5)text("45mm between rods",3.6);
-    translate([0,9,-10.5])minkowski(){sphere(2); cube([11,7,3],center=true);}
-    //translate([12,-9,0])cylinder(50,2,2,center=true,$fn=5);
-    //translate([-12,-9,0])cylinder(50,2,2,center=true,$fn=5);
-}
- 
+   rotate([0,0,180])translate([-23.0,21,-10])rotate([90,0,-90])linear_extrude(5)text("45mm between rods",3.6);
+    translate([0,9,-10.5])minkowski(){sphere(2); cube([12,8,2.1],center=true);}
+    translate([0,13.5,-10.5])minkowski(){sphere(1); cube([14,1,31],center=true);}
+    translate([11,13.5,-1])rotate([00,0,0])cylinder(14,1.5,1.5,center=true,$fn=5);
+    translate([-11,13.5,-1])rotate([00,0,-180])cylinder(14,1.5,1.5,center=true,$fn=5);
+  
+}difference(){
+ translate([-17,-50,-3])minkowski(){sphere(1); cube([13,6,16],center=true);}
+ translate([-17,-50,-3])minkowski(){sphere(1); cube([10,4,18],center=true);}}
 translate([0,-38,-3])rotate([-90,0,0]){
 bracket();
 }   
@@ -577,7 +581,11 @@ module bed(){
 color("red")translate([0,0,-abovebed])cube([70,70,0.5],center=true);
 }
 module bracket(){
+    rotate([0,0,180]){
+    translate([-21,rodwidth/2+0.3,-rodheight/2-sleevewall])sphere(noch*1.1);
+            translate([-21,-rodwidth/2-0.3,-rodheight/2-sleevewall])sphere(noch*1.1);}
 rotate([0,0,180])
+    
 color("green")difference(){
     
     union(){
