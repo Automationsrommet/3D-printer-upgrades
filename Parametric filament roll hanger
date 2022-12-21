@@ -1,0 +1,32 @@
+//Parametric filament roll hanger for one screw
+
+//Input parameters
+
+polediameter=18;
+holediameter=4;
+detail=12;
+fravegg=100;
+margin=1;
+
+$fn=detail;
+
+hanger();
+
+module hanger(){
+    difference(){
+   union(){
+  translate([0,0,fravegg/4])cube([20,10,fravegg],center=true);
+translate([0,0,fravegg*0.75])rotate([90,0,0])cylinder(10,10,10,center=true,$fn=10);
+translate([0,0,-25])rotate([90,0,0])cylinder(10,10,10,center=true,$fn=10);
+       
+translate([5,fravegg/2,0])cube([10,fravegg,2*polediameter],center=true);   
+   translate([5,fravegg,0])rotate([0,90,0])cylinder(10,polediameter,polediameter,center=true,$fn=10);
+   translate([5,fravegg/4+10/2,fravegg/4+polediameter/2])cube([10,fravegg/2,fravegg/2],center=true);    
+}
+translate([0,fravegg,0])rotate([0,90,0])cylinder(25,polediameter/2,polediameter/2,center=true,$fn=10);
+translate([0,0,fravegg*0.75])rotate([90,0,0])cylinder(20,holediameter/2,holediameter/2,center=true,$fn=10);
+translate([5,fravegg/2+10/2,fravegg/2+polediameter])rotate([0,90,0])cylinder(10+margin,fravegg/2,fravegg/2,center=true,$fn=50);
+
+}
+
+}
