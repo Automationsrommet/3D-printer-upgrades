@@ -1,0 +1,5 @@
+//Vertical sugar extruder that could also maybe work for pla pellets and concrete. The idea started with boiling white sugar as when making sugardice.
+
+//En bolle med omrører og sluk i midten. Omrøreren er samtidig en skrue som tvinger massen ned i sluken. Mulig motoren trenger å være bra sterk.
+//Bollen er tenkt i et metallstykke med dyse nederst, kanskje standard 3D-printer-dyse. Det burde være mulig å ha induktiv oppvarming i dysebiten, kanskje med innlagt heatbreak.
+//Kanskje en aluminiumsflaske kan gjøre nytten som røre- og- skrue-sted, mens en konisk trakt kan gjøre nytten som samlingssted for masse masse.
