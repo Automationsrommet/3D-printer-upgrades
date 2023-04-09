@@ -1,0 +1,17 @@
+rullbredde=54; //73 for flexrullen
+ytredia=52;
+indredia=4;
+kamfer=2;
+detalj=72;
+$fn=detalj;
+
+difference(){
+union(){
+cylinder(rullbredde-2*kamfer,ytredia/2-kamfer,ytredia/2-kamfer,center=true);
+translate([0,0,rullbredde/2-kamfer/2])cylinder(kamfer,ytredia/2-kamfer,ytredia/2,center=true);
+translate([0,0,-rullbredde/2+kamfer/2])cylinder(kamfer,ytredia/2,ytredia/2-kamfer,center=true);
+}
+cylinder(rullbredde-2*kamfer,indredia/2+kamfer,indredia/2+kamfer,center=true);
+translate([0,0,rullbredde/2-kamfer/2])cylinder(kamfer,indredia/2+kamfer,indredia/2,center=true);
+translate([0,0,-rullbredde/2+kamfer/2])cylinder(kamfer,indredia/2,indredia/2+kamfer,center=true);
+}
