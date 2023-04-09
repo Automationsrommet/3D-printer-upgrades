@@ -1,0 +1,41 @@
+rullbredde=40; //73 for flexrullen
+ytredia=52;
+indredia=4;
+kamfer=10;
+detalj=72;
+armsterk=4;
+vegghold=5;
+margin=2;
+$fn=detalj;
+
+translate([20,0,-4])rotate([90,0,0])
+brakett();
+rulle();
+
+module rulle(){
+ difference(){
+union(){
+cylinder(rullbredde-2*kamfer,ytredia/2-kamfer,ytredia/2-kamfer,center=true);
+translate([0,0,rullbredde/2-kamfer/2])cylinder(kamfer,ytredia/2-kamfer,ytredia/2,center=true);
+translate([0,0,-rullbredde/2+kamfer/2])cylinder(kamfer,ytredia/2,ytredia/2-kamfer,center=true);
+}
+cylinder(rullbredde-2*2,indredia/2+2,indredia/2+2,center=true);
+translate([0,0,rullbredde/2-2/2])cylinder(2,indredia/2+2,indredia/2,center=true);
+translate([0,0,-rullbredde/2+2/2])cylinder(2,indredia/2,indredia/2+2,center=true);
+}   
+}
+module brakett(){
+    difference(){
+        union(){
+  translate([ytredia/2+margin+vegghold/2,0,0])cube([vegghold,ytredia-kamfer*2,rullbredde+margin*2+armsterk*6],center=true); 
+   translate([ytredia/4+margin/2,0,rullbredde/2+margin+armsterk/2])cube([ytredia/2+margin,ytredia-kamfer*2,armsterk],center=true); 
+   translate([ytredia/4+margin/2,0,-rullbredde/2-margin-armsterk/2])cube([ytredia/2+margin,ytredia-kamfer*2,armsterk],center=true); 
+    translate([0,0,rullbredde/2+margin+armsterk/2])cylinder(armsterk,ytredia/2-kamfer,ytredia/2-kamfer,center=true); 
+   translate([0,0,-rullbredde/2-margin-armsterk/2])cylinder(armsterk,ytredia/2-kamfer,ytredia/2-kamfer,center=true);} 
+    cylinder(2*rullbredde,indredia/2-margin/4,indredia/2+margin/2,center=true);
+    translate([ytredia/2+vegghold,ytredia/2-kamfer-vegghold,rullbredde/2+margin+armsterk+armsterk])rotate([0,-90,0])cylinder(vegghold*2,indredia/2-margin/4,indredia/2+margin/2,center=true);
+    translate([ytredia/2+vegghold,-ytredia/2+kamfer+vegghold,rullbredde/2+margin+armsterk+armsterk])rotate([0,-90,0])cylinder(vegghold*2,indredia/2-margin/4,indredia/2+margin/2,center=true);
+    translate([ytredia/2+vegghold,ytredia/2-kamfer-vegghold,-rullbredde/2-margin-armsterk-armsterk])rotate([0,-90,0])cylinder(vegghold*2,indredia/2-margin/4,indredia/2+margin/2,center=true);
+    translate([ytredia/2+vegghold,-ytredia/2+kamfer+vegghold,-rullbredde/2-margin-armsterk-armsterk])rotate([0,-90,0])cylinder(vegghold*2,indredia/2-margin/4,indredia/2+margin/2,center=true);
+    }
+}
