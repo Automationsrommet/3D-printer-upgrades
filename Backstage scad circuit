@@ -1,0 +1,705 @@
+//x carriage reprap wilson style
+//in 8 parts; the carriage, belt-terminal, ABL-rod,ABL-arm and the two different ABL-shoes to hit x axis sides. PartCoolingFanHolder and Cable Manager piece
+
+//input parameters
+xrod_distance=45; 
+bearingrad=7.5;
+bearinglength=45;
+thickness=3;
+motorpos=[0,-16.5,-12.5];
+
+xcarriagelength=49;
+stickoutL=21;
+stickoutR=16;
+wander=5;
+holedistance=30;
+holediameter=3;
+abovebed=15;
+rodlength=xcarriagelength+stickoutL+stickoutR+wander;
+rodwidth=14;
+rodheight=6;
+sleevewall=1.9;
+margin=0.2;
+noches=8;
+noch=1;
+switchholedistance=9.5;
+switchholedia=2.5;
+copperdistance=2.54;
+
+$fn=12;
+
+projection(cut = true)translate([0,0,-11.5])backstage();
+//vogn();
+//middle();
+
+//arm();
+//shoes();
+//rod();
+
+//Props:
+//switch();
+//plate();
+//bed();
+//LGX();
+module backstage(){
+    color("beige")translate([0,-3,10])cube([40,40,2],center=true);
+    difference(){
+        union(){
+        color("red")translate([-4,-3,11])cube([3,8,1],center=true); 
+            color("red")translate([-4,-21.5,11])cube([3,2,1],center=true); 
+            color("red")translate([-4,-17,11])cube([3,2,1],center=true); 
+            color("red")translate([-4,7,11])cube([3,2,1],center=true); 
+            color("red")translate([-4,13,11])cube([3,4,1],center=true); 
+         color("red")translate([-9,-3,11])cube([3,8,1],center=true);   
+    difference(){
+    color("yellow")translate([0,-3,10.5])linear_extrude(1)minkowski(){
+      square([39,39],center=true); circle(0.5);
+        }
+    color("yellow")translate([0,-5,9])linear_extrude(3)minkowski(){
+      square([33,32],center=true); circle(0.4);
+        }
+    }
+    
+    for(i=[-6:1:6]){
+     color("chocolate")translate([i*copperdistance,-5,11])cube([1.8,30,1],center=true); 
+     for(j=[-1:2:1]){
+        color("yellow")translate([i*copperdistance,-5+15*j,10.5])linear_extrude(1)minkowski(){
+      square(1.7,center=true); circle(0.2);
+        }
+     }  
+    }
+    
+}
+color("white")translate([15.7-copperdistance*0,-15,10.5])rotate([0,0,90])linear_extrude(2)text("motor 1",1);
+    color("white")translate([15.7-copperdistance*1,-15,10.5])rotate([0,0,90])linear_extrude(2)text("motor 2",1);
+    color("white")translate([15.7-copperdistance*2,-15,10.5])rotate([0,0,90])linear_extrude(2)text("motor 3",1);
+    color("white")translate([15.7-copperdistance*3,-15,10.5])rotate([0,0,90])linear_extrude(2)text("motor 4",1);
+    color("white")translate([15.7-copperdistance*4,-15,10.5])rotate([0,0,90])linear_extrude(2)text("ex auto fan 5",1);
+    color("white")translate([15.7-copperdistance*5,-15,10.5])rotate([0,0,90])linear_extrude(2)text("chamber fan 4",1);
+    color("white")translate([15.7-copperdistance*6,-15,10.5])rotate([0,0,90])linear_extrude(2)text("peltier cooler",1);
+    color("white")translate([15.7-copperdistance*7,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Ground",1);
+    color("white")translate([15.7-copperdistance*8,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Earth",1);
+    color("white")translate([15.7-copperdistance*9,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Heating",1);
+    color("white")translate([15.7-copperdistance*10,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Extruder 0",1);
+    color("white")translate([15.7-copperdistance*11,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Temp",1);
+    color("white")translate([15.7-copperdistance*12,-15,10.5])rotate([0,0,90])linear_extrude(2)text("Bondtech LGX",1);
+
+    color("pink")translate([0,14,10])rotate([0,0,0])linear_extrude(height=3)oshw_logo_2d(5);
+
+    for(k=[-6:1:6]){
+        for(l=[-1:2:1]){
+    color("red")translate([11*l,13.5,-1])rotate([00,0,0])cylinder(54,1.5,1.5,center=true);
+        color("yellow")translate([k*copperdistance,-5+15*l,8])linear_extrude(6)circle(0.4);
+        color("yellow")translate([k*copperdistance,5,8])linear_extrude(6)circle(0.4);
+        color("yellow")translate([-2*copperdistance,2,8])linear_extrude(6)circle(0.4);
+        color("yellow")translate([-1*copperdistance,2,8])linear_extrude(6)circle(0.4);
+            
+        color("yellow")translate([k*copperdistance*1.6,-3.3+19.0*l,8])linear_extrude(6)circle(0.4);
+            }
+        }
+    }  
+}
+module gear_tooth_2d(d) 
+{   polygon([[0.0,10.0*d/72.0], [0.5*d,d/15.0], 
+             [0.5*d,-d/15.0], [0.0,-10.0*d/72.0]] );
+}
+
+module oshw_logo_2d(d=10.0)
+{   rotate(-135)
+    {   difference() 
+        {   union() 
+            {   circle(r=14.0*d/36.0,$fn=20);
+                for( a= [45: 45: 8*45] ) rotate(a) gear_tooth_2d(d);
+            }
+            circle(r=10.0*d/72.0,$fn=20);
+            intersection() 
+            {   rotate(-20) square(size=[10.0*d/18.0,10.0*d/18.0]);
+                rotate(20)  square(size=[10.0*d/18.0,10.0*d/18.0]);
+            }
+        }
+    }
+}
+
+// usage : oshw_logo_2d(diameter)
+module vogn(){
+ difference(){
+union(){
+    translate([33/2,12.5,0])minkowski(){sphere(1); cylinder(10,3,3,center=true);}
+    translate([-33/2,12.5,0])minkowski(){sphere(1); cylinder(10,3,3,center=true);}
+    translate([31/2,-16.5-31/2,0])minkowski(){sphere(1); cylinder(10,4,3,center=true);}
+    translate([-31/2,-16.5-31/2,0])minkowski(){sphere(1); cylinder(10,4,3,center=true);}
+    translate([0,-34,-3])minkowski(){sphere(2); cube([45,6.5,13],center=true);}
+        backplate();
+clamps();
+
+}
+color("red")bearings();
+translate([motorpos[0],motorpos[1],motorpos[2]])nema17();
+translate([33/2,12.5,0])cylinder(60,2,2,center=true);
+translate([-33/2,12.5,0])cylinder(60,2,2,center=true);
+
+translate([33/2,12.5,-16])minkowski(){sphere(2); cylinder(10,4,2,center=true,$fn=6);}
+    translate([-33/2,12.5,-16])minkowski(){sphere(2); cylinder(10,4,2,center=true,$fn=6);}
+    translate([21,27,-10])rotate([0,180,0])linear_extrude(5)text("X-vogn-blandings",4);
+    translate([20.8,21,-10.5])rotate([0,180,0])linear_extrude(5)text("for Bondtech LGX",3.8);
+    translate([20.3,17,-10.5])rotate([0,180,0])linear_extrude(5)text("av Prusa, Wilson og Gerolf",2.5);
+    translate([22,32.0,-0])rotate([-90,180,0])linear_extrude(5)text("Automationsrommet",3.6);
+    translate([07.5,32.0,-5])rotate([-90,180,0])linear_extrude(5)text("at github.com",3.6);
+    translate([18,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
+    translate([08,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
+    translate([-14,-37.5,5])linear_extrude(5)text("ABL Z-PROBE",3.1);
+   rotate([0,0,180])translate([-23.0,21,-10])rotate([90,0,-90])linear_extrude(5)text("45mm between rods",3.6);
+    translate([0,9,-10.5])minkowski(){sphere(2); cube([12,8,2.1],center=true);}
+    translate([0,13.5,-10.5])minkowski(){sphere(1); cube([14,1,31],center=true);}
+    translate([11,13.5,-1])rotate([00,0,0])cylinder(14,1.5,1.5,center=true,$fn=5);
+    translate([-11,13.5,-1])rotate([00,0,-180])cylinder(14,1.5,1.5,center=true,$fn=5);
+  
+}difference(){
+ translate([-17,-50,-3])minkowski(){sphere(1); cube([13,6,16],center=true);}
+ translate([-17,-50,-3])minkowski(){sphere(1); cube([10,4,18],center=true);}
+ translate([-10.0,-52,5])rotate([00,90,-0])linear_extrude(15)text("Cables",3.5);
+ }
+translate([0,-38,-3])rotate([-90,0,0]){
+bracket();
+}   
+}
+module middle(){
+    difference(){
+  intersection(){
+    minkowski(){cube([44.5,18,8.3],center=true);
+        sphere(2);
+   }
+translate([17.9,-22.5,-10])x_carriage();
+}
+translate([33/2,12.5,0])minkowski(){sphere(1); cylinder(18,3.3,3.3,center=true);}
+    translate([-33/2,12.5,0])minkowski(){sphere(1); cylinder(18,3.3,3.3,center=true);}
+translate([motorpos[0],motorpos[1],motorpos[2]])nema17();
+}
+}
+ module clamps(){
+   translate([0,xrod_distance/2,0])minkowski(){
+      cube([bearinglength-0,17,8],center=true);
+       sphere(2);
+       }
+       translate([0,-xrod_distance/2,0])minkowski(){
+      cube([bearinglength-0,17,8],center=true);
+       sphere(2);
+       }
+    }
+module bearings(){
+   translate([0,xrod_distance/2,0])rotate([0,90,0])cylinder(bearinglength,bearingrad,bearingrad,center=true);
+    translate([bearinglength/2+1,xrod_distance/2,0])rotate([0,90,0])cylinder(2,bearingrad,bearingrad-1,center=true);
+    translate([-bearinglength/2-1,xrod_distance/2,0])rotate([0,90,0])cylinder(2,bearingrad-1,bearingrad,center=true);
+    translate([bearinglength/2+1,-xrod_distance/2,0])rotate([0,90,0])cylinder(2,bearingrad,bearingrad-1,center=true);
+    translate([-bearinglength/2-1,-xrod_distance/2,0])rotate([0,90,0])cylinder(2,bearingrad-1,bearingrad,center=true);
+    translate([0,-xrod_distance/2,0])rotate([0,90,0])cylinder(bearinglength,bearingrad,bearingrad,center=true);
+    }
+   module nema17(){
+   color("green")cube([42.5,42.5,10],center=true);
+       color("orange")for(i=[-31/2:31:31/2]){
+         for(j=[-31/2:31:31/2]){ 
+            translate([i,j,0])cylinder(60,2,2,center=true); 
+       }}
+    }
+    module backplate(){
+   translate([0,-0.5,-bearingrad/2-thickness/2])difference(){
+       minkowski(){cube([bearinglength+thickness*2-6,xrod_distance+bearingrad*2+thickness*2-3,thickness+bearingrad-2],center=true);
+       sphere(2);}
+        translate([0,1,10])minkowski(){cube([45,18,15],center=true);
+            sphere(2);
+        }}
+        translate([motorpos[0],motorpos[1],motorpos[2]+4])minkowski(){
+      cube([41,41,2],center=true);
+       sphere(2);
+    }}
+
+module belt_cut()
+{
+    rotate([0,0,180]) 
+    {
+    translate([-20,0,0]) cube([39,0.75,15]);
+    translate([-20,0,5]) rotate([-7,0,0]) cube([39,0.75,10]);
+    translate([-20,0,5]) rotate([10,0,0]) cube([39,0.75,10]);
+     for (_step =[-20:2:18])
+        {
+            translate([_step,0.5,0]) cube([1,1.0,10]);
+        }
+        for (_step =[-20:2:18])
+        {
+            translate([_step,0.5,5]) rotate([-7,0,0]) cube([1,1,10]);
+        }
+    }
+}
+
+
+module x_carriage_base()
+{
+    
+    // Small bearing holder
+    translate([-33/2,0,0]) rotate([0,0,90]) horizontal_bearing_base(1);
+    
+    // Long bearing holder
+    translate([-33/2,45,0]) rotate([0,0,90]) horizontal_bearing_base(2);
+    
+    // Base plate
+    translate([-34,-14,0]) cube([34.5,70.5,7]);
+    translate([-33,-15,0]) cube([33,7,15]);
+    translate([-42.5,53.0,0]) cube([52,6.5,15]);
+ 
+    difference()
+    {
+        union()
+        {
+        translate([-12,30,1]) rotate([0,0,45]) cube([6,6,14]);
+        translate([-20,30,1]) rotate([0,0,45]) cube([6,6,14]);
+        }
+        translate([-25,38,11]) rotate([43,0,0]) cube([20,8,8]);
+    }
+ 
+    // upper motor screw block
+    translate([-23,56.8,0]) rotate([0,0,0]) cube([32.5,18.2,8]); 
+     
+    // Belt holder base
+    translate([-42.5,20,0]) cube([52,16,7]);
+     
+    // new belt holder base block
+    translate([-42.5,18,7]) cube([52,16.3,8]);
+    
+}
+
+
+
+module x_carriage_holes()
+{
+    // Small bearing holder holes cutter
+    translate([-33/2,0,0]) rotate([0,0,90]) horizontal_bearing_holes_nozip(1);
+    
+    // Long bearing holder holes cutter
+    translate([-33/2,45,0]) rotate([0,0,90]) horizontal_bearing_holes_nozip(2);
+  
+    // upper ziptie right
+    translate([2,0,0])
+    difference()
+        {
+            translate([0.75,45,12]) rotate([0,90,0]) cylinder(r=10.8, h=3.5, $fn=25);   
+            translate([0,45,12]) rotate([0,90,0]) cylinder(r=9, h=6, $fn=25);
+        }
+        
+    // upper ziptie left
+    translate([-38,0,0])
+    difference()
+        {
+            translate([0.75,45,12]) rotate([0,90,0]) cylinder(r=10.8,h=3.5,$fn=25);   
+            translate([0,45,12]) rotate([0,90,0]) cylinder(r=9, h=6, $fn=25);
+        }
+    
+    // upper ziptie head
+    translate([0,52.5,12]) cube([10,10,5]); 
+    translate([-45,52.5,12]) cube([13.5,10,5]); 
+    
+    // Extruder mounting holes
+    translate([-17.5+12,24.5,-1])cylinder(r=1.65, h=20, $fn=25);
+    translate([-17.5+12,24.5,-0.1])cylinder(r1=2.1,r2=1.65, h=0.5, $fn=25);
+    translate([-17.5+12,24.5,12])cylinder(r=5.8/2, h=20, $fn=25); 
+
+    translate([-16.5-12,24.5,-1])cylinder(r=1.65, h=20, $fn=25);
+    translate([-16.5-12,24.5,-0.1])cylinder(r1=2.1,r2=1.65, h=0.5, $fn=25);
+    translate([-16.5-12,24.5,12])cylinder(r=5.8/2, h=20, $fn=25); 
+    
+    // Carriage slimer
+    translate([-55.5+3,19,-1])cube([10,40,30]);
+    translate([+12.5-3,19,-1])cube([10,40,30]);
+    translate([+12.5-3.5-2,30.8,-1])rotate([0,90-65,0])cube([10,55,30]);
+    translate([-55.5+6.7+2,19,-10])rotate([0,-90+65,0])cube([10,40,30]);
+   
+}
+
+module x_carriage_fancy()
+{
+    // Top right corner
+    translate([11.5,8,0]) translate([0,45+11.5,-1]) rotate([0,0,45]) translate([0,-15,0]) cube([30,30,20]);
+    
+    // Top left corner
+    translate([-33-13.5,-5,0]) translate([0,45+11.5,-1]) rotate([0,0,135]) translate([0,-15,0]) cube([30,30,20]);	
+ 
+    translate([-27,74.5,9]) rotate([0,45,0]) translate([0,-15,0]) cube([5,25,5]);	   
+    translate([-23,86,16]) rotate([45,0,0]) translate([0,-15,0]) cube([45,5,5]);	   
+    
+    // bottom side edges
+    translate([-40,-15,-5]) rotate([30,0,0]) cube([45,6,15]);
+    translate([-35,-19.2,0]) rotate([0,0,45]) cube([6,6,16]);
+    translate([2,-19.2,0]) rotate([0,0,45]) cube([6,6,16]);
+    translate([2,55.9,12]) rotate([0,0,45]) cube([6,6,16]);
+    translate([-33.5,55.9,12]) rotate([0,0,45]) cube([6,6,16]);
+    
+}
+
+module cable_tray()
+{
+    
+    // center screw block
+    translate([-21,23,0]) cube([9,12,15]); 
+    
+    difference()
+    {    
+        union()
+        {
+            translate([-20.8,24.8,0]) rotate([0,0,20]) cube([3,10,15]); 
+            translate([-15.5,25.8,0]) rotate([0,0,-20]) cube([3,10,15]); 
+        }
+        translate([-25,34.2,0]) cube([20,10,15]); 
+    }
+    
+    translate([6.5,32,10]) cube([3,5,5]); 
+    translate([-42.5,32,10]) cube([4,5,5]); 
+    
+    //Left cable tray
+    translate([-39.9,11,0]) cube([9,2,15]); 
+    translate([-39.9,5.5,0]) cube([9,2,15]); 
+    
+    //Right cable tray
+    translate([-2,5.5,0]) cube([11.45,2,15]);
+    translate([-2,11,7]) cube([11.45,2,8]);
+    
+    translate([-31,11.5,7]) cube([30,1.5,8]);
+        
+    difference(){ 
+    translate([0,11,0]) cube([9.50,12,7]);
+    translate([0,6,1])rotate([-30,0,0]) cube([7.5,12,7]);
+    translate([0,3.5,6])rotate([-60,0,0]) cube([7.5,12,7]);
+    translate([0,10+3,-1])cube([7.5,11,6]);    
+    }
+    
+    
+}
+
+
+module final_cutout()
+{
+    // cable guide edges
+    translate([-44,0,16]) rotate([0,45,0]) cube([5,15,5]);
+    translate([6,0,16]) rotate([0,45,0]) cube([5,15,5]);
+    
+    // motor cable opening
+    translate([0.5,10+3,-1])cube([7,9.2,6]);    
+    
+    // filament hole
+      
+    
+    difference () {
+        
+        union() {
+    translate([-14.199,9.05,0]) rotate([-5,0,22.5]) cylinder(r=1.62, h=40, $fn=8);    
+    translate([-14.5,9.7,8]) rotate([-5,0,22.5]) cylinder(r=1.62,r2=3, h=8, $fn=8);  
+        }
+   //translate([-18,6.7,12])   cube([7,7,5]); 
+        
+    }
+    
+    // bottom back mounting screws
+    translate([-6.5,-11,4]) cylinder(r=1.65, h=20, $fn=50);  
+    translate([-26.5,-11,4]) cylinder(r=1.65, h=20, $fn=50); 
+   
+    difference() {
+    union(){    
+    translate([-29.3,-14,10]) cube([5.6,7,2.1]);
+    translate([-09.3,-14,10]) cube([5.6,7,2.1]);
+    }
+         translate([-36,-8.1,10]) cube([40,1,0.5]);
+    } 
+    // better printing bridges
+    translate([-29.3,-12.65,10.35]) cube([5.6,3.3,2.1]);
+    translate([-09.3,-12.65,10.35]) cube([5.6,3.3,2.1]);
+    translate([-28.15,-12.65,10.7]) cube([3.3,3.3,2.1]);
+    translate([-8.15,-12.65,10.7]) cube([3.3,3.3,2.1]);
+    
+    
+    
+    // x-carriage-back mounting screws
+    translate([-4,56,0]) cylinder(r=1.7, h=40, $fn=50);  
+    translate([-27.5,56,0]) cylinder(r=1.7, h=40, $fn=50);  
+    translate([-30.3,53,8]) cube([5.6,8,2]);
+    translate([-6.8,53,8]) cube([5.6,8,2]);
+    
+    // better printing bridges
+    translate([-6.8,54.35,8.35]) cube([5.6,3.3,2]);
+    translate([-5.65,54.35,8.7]) cube([3.3,3.3,2]);
+    translate([-30.3,54.35,8.35]) cube([5.6,3.3,2]);
+    translate([-29.15,54.35,8.7]) cube([3.3,3.3,2]);
+    
+    
+    
+    // center mounting screw
+    translate([-16,29,0]) cylinder(r=1.65, h=40, $fn=50);
+    translate([-18.8,26,10.5]) cube([5.6,12,2.1]); 
+    translate([-21,33,11]) cube([10,8,6]);
+    
+    // better printing bridges
+    translate([-18.8,27.35,10.9]) cube([5.6,3.3,2.1]);
+    translate([-17.65,27.35,11.25]) cube([3.3,3.3,2.1]);
+    
+    // opening for power cables to hotend & termistor cable
+    translate([-16.5,-18,-5]) rotate([-5,0,0]) cylinder(r=6, h=40, $fn=30);  
+    
+}
+
+ 
+module x_carriage_block()
+{
+    difference()
+        {
+            union()
+            {
+                difference()
+                {
+                    x_carriage_base();
+                    //x_carriage_holes();
+                    //x_carriage_fancy();
+                }
+                cable_tray();
+            }
+            final_cutout();
+        }
+}
+
+module x_carriage()
+{
+    difference()
+    {
+            x_carriage_block();
+            
+            // upper motor screw
+            translate([2.5,67.5,-50]) cylinder(r=1.8, h=100, $fn=30);
+            translate([2.5,67.5,-0.1]) cylinder(r1=2.1,r2=1.8, h=0.5, $fn=25);
+            translate([2.5,67.5,5]) cylinder(r=3.2, h=8, $fn=30);
+            translate([0.5,22.5,0]) rotate([0,90,0]) cylinder(r=5.2, h=7.0, $fn=25);
+
+            // cable management cleanup
+            difference()
+            {
+                translate([2.5,21.5,0]) rotate([0,90,0]) cylinder(r=5.2, h=5.0, $fn=25);
+                translate([2,16,-10]) cube([10,6,20]);
+            }
+
+            // selective infill
+            
+            translate([5,-15.4,-1]) rotate([0,45,0]) cube([0.3,4.6,8]);        
+            translate([8.45,11.5,1]) cube([0.5,1.8,4]);        
+            
+            translate([5,-16.4,-1]) rotate([0,45,0]) cube([0.3,0.5,8]);        
+            translate([5,-10.3,-1]) rotate([0,45,0]) cube([0.3,0.5,8]);    
+            translate([6,-16.5,-1]) cube([1,0.5,5]);        
+            translate([3,-16.5,-1]) cube([2,0.5,5]);  
+            translate([6,-10.2,-1]) cube([1,0.5,5]);        
+            translate([3,-10.2,-1]) cube([2,0.5,5]);  
+            translate([6,7.5,-1]) cube([1,0.5,5]);  
+            translate([6,10.5,-1]) cube([1,0.5,5]);  
+            
+            translate([-19,24,1.5]) cube([6,0.5,12.0]);      
+                        
+            //cable openings in guides
+            //translate([-40.8,7.5,0]) rotate([0,20,0]) cube([5,3.5,20]);
+            translate([-2.9,7.5,18]) rotate([0,80,0]) cube([20,3.55,5]);
+            
+            // filament sensor connector
+            translate([-12.5,64,-3]) cube([4,11.2,14]);
+            translate([-12.5,65.75,-3]) cube([5,2.5,14]);
+            translate([-12.5,71.75,-3]) cube([5,2.5,14]);
+            translate([-14.5,67,-3]) cube([4,6,14]);
+            translate([-14.5,65,4.7]) cube([4,10.2,5]);
+            translate([-12.5,54.5,8]) cube([3.5,10.2,14]);
+            translate([-12.5,57.5,9.5]) rotate([35,0,0]) cube([3.5,10.2,14]);
+            translate([-12.5,58,8]) rotate([0,0,45]) cube([3,3,14]);
+            translate([-10,58,8]) rotate([0,0,45]) cube([3,3,14]);
+            
+            translate([0,-0.5,0]) left_belt_cut();
+            translate([0,0.5,0]) right_belt_cut();
+            
+            //version
+            //translate([-2,-8,0.5]) rotate([0,180,0]) linear_extrude(height = 0.6){ text("R3",font = "helvetica:style=Bold", size=5, center=true); }
+
+    }
+}
+
+
+module left_belt_cut()
+{
+
+        translate([-22.5,30.2,7]) cylinder(r=1.5, h=100, $fn=30);
+        translate([-23.0,20,7]) cube([2,10,30]);
+        translate([-56.5,28.5,7]) belt_cut();
+        translate([13.5,20.5,0]) rotate([0,0,25])
+        {
+            difference()
+            {
+            translate([-56.5,28.5,7]) belt_cut();
+            translate([-80,25,7]) cube([37.5,10,30]);
+            }
+        }
+        translate([13.2,2.38,0]) rotate([0,0,0])
+        {
+            difference()
+            {
+            translate([-56.5,28.5,7]) belt_cut();
+            translate([-82.42,25,7]) cube([37.5,10,30]);
+            }
+        }
+        translate([-45,17.6,4]) rotate([0,0,-15]) cube([10,3,30]);
+        translate([-31.5,30.4,10]) rotate([-10,0,15]) cylinder(r=0.2, h=100, $fn=30);
+        translate([-31.6,30.75,7]) rotate([0,0,0]) cylinder(r=0.2, h=100, $fn=30);
+    }
+
+
+module right_belt_cut()
+{
+        // right belt cut
+        translate([-9.6,29.7,7]) cylinder(r=1.5, h=100, $fn=30);
+        translate([-11.1,19.8,7]) cube([2,10,30]);
+        translate([22.5,25.5,7]) belt_cut();
+        translate([66.65,1.95,0]) rotate([0,0,0])
+        {
+            difference()
+            {
+                translate([-56.5,28.5,7]) belt_cut();
+                translate([-71.55,25,7]) cube([37.5,10,30]);
+            }
+        }
+        translate([43.2,-30.25,0]) rotate([0,0,-30])
+        {
+        difference()
+            {
+                translate([-56.5,28.5,7]) belt_cut();
+                translate([-82.1,25,7]) cube([10,10,30]);
+                translate([-61.5,25,7]) cube([20.5,10,30]);
+            }
+        }
+        translate([2,14.6,7]) rotate([0,0,15]) cube([10,3,30]);
+        translate([-5.1,30,10]) rotate([-10,0,-15]) cylinder(r=0.2, h=100, $fn=30);
+        translate([-5,30.3,7]) rotate([0,0,0]) cylinder(r=0.2, h=100, $fn=30);
+    }
+
+//Reprap Wilson has an amazing z-probe mechanic solution. I have to have it.
+
+module rod(){
+color("orange")difference(){
+translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth-margin,rodheight-margin],center=true);
+ for(i=[-noches/2*noch*2:2:noches/2*noch*2]){ 
+     translate([i,20,-rodheight-sleevewall+1.5])rotate([90,0,0])linear_extrude(50)polygon([[-noch/2,rodheight/4],[-noch-margin,0],[-noch-4,-10],[noch+4,-10],[noch+margin,0],[noch/2,rodheight/4],[0,rodheight/3+margin*2]]);
+    translate([-noches/2*noch*2-noch/2,20,-rodheight-sleevewall+1])rotate([90,5,0])linear_extrude(50)square([noch,rodheight],center=true); 
+      
+ } 
+for(k=[0:noch*2:noches]){
+translate([-25+k,rodwidth/2+1.2,-rodheight/2-sleevewall])sphere(noch*2);
+translate([-25+k,-rodwidth/2-1.2,-rodheight/2-sleevewall])sphere(noch*2);  
+}
+//shoe holes
+translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*5,noch*7,19],center=true);
+translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*5,noch*7,19],center=true);
+}
+}
+
+
+module arm(){
+difference(){
+translate([0,0,1.7]){
+    difference(){
+translate([0,0,-(rodheight+2*sleevewall)-noch])rotate([90,0,0])cylinder(rodwidth,2*noch,2*noch,center=true);
+ translate([-6,0,-2*rodheight-sleevewall])color("chocolate")cube([9.5,19.8,5.4],center=true);
+}       
+        
+for (j=[-360/noches:360/noches:3*360/noches]){
+    translate([0,rodwidth/2,-(rodheight+2*sleevewall)-noch])rotate([90,j,0])translate([0,noch*1.5,0])linear_extrude(rodwidth)polygon([[-noch/2,rodheight/4],[-noch*0.7,-margin],[noch*0.7,-margin],[noch/2,rodheight/4],[0,rodheight*0.38]]);
+}
+difference(){
+translate([-noches/2,0,-(rodheight+2*sleevewall+noch)-0])cube([noch*noches+2,rodwidth,rodheight/2-margin],center=true);
+    translate([9.5/2-2.9-6,+switchholedistance/2,-2*rodheight-1])cylinder(95,switchholedia/2,switchholedia/2,center=true);
+    translate([9.5/2-2.9-6,-switchholedistance/2,-2*rodheight-1])cylinder(95,switchholedia/2,switchholedia/2,center=true);  
+    translate([9.5/2-2.9-6,0,-2*rodheight+5.4])rotate([90,90,0])cylinder(95,switchholedia/2,switchholedia/2,center=true); 
+    translate([-6,0,-2*rodheight-3])color("chocolate")cube([9.5,19.8,6.4],center=true);
+}
+
+translate([-(noches/2*noch*2+noch/2-margin),rodwidth/2,-rodheight-sleevewall])rotate([90,5,0])linear_extrude(rodwidth)square([noch,rodheight/2],center=true);
+translate([(noch*2-margin),rodwidth/2,-rodheight*1.6-sleevewall])rotate([90,165,0])linear_extrude(rodwidth)square([noch,rodheight/2],center=true);
+translate([0.6,rodwidth/2,-rodheight*1.6-sleevewall])rotate([90,90,0])linear_extrude(rodwidth)square([noch,rodheight/2],center=true);
+translate([-0.75,rodwidth/2,-rodheight*1.6-sleevewall])rotate([90,90,0])linear_extrude(rodwidth)square([noch*2,noch],center=true);
+
+difference(){
+translate([-4.8,rodwidth/2,-rodheight*1.6])rotate([90,90,0])linear_extrude(rodwidth)square([noch/2,9.5],center=true);
+  translate([9.5/2-2.9-6,+switchholedistance/2,-2*rodheight-1])cylinder(9.5,switchholedia/2,switchholedia/2,center=true);
+    translate([9.5/2-2.9-6,-switchholedistance/2,-2*rodheight-1])cylinder(9.5,switchholedia/2,switchholedia/2,center=true); 
+   translate([-6,0,-2*rodheight-2])color("chocolate")cube([9.5,19.9,6.4],center=true); 
+}
+}
+translate([0,0,-(rodheight+2*sleevewall)-noch+1.7])rotate([90,0,0])cylinder(rodwidth*3,noch+margin,noch+margin,center=true);
+}
+}
+
+module plate (){
+color("black")difference(){
+translate([0,2,xcarriagelength/2])cube([xcarriagelength,1,xcarriagelength],center=true);
+translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true); 
+ translate([-holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holediameter/2,center=true);   
+}
+}
+module shoes(){
+    color("purple")intersection(){
+    union(){
+translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*2,noch*4,16],center=true);
+translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*2-margin*2,noch*4-2*margin,16-margin],center=true);
+    
+    translate([-xcarriagelength/2-stickoutL+1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true); 
+    translate([+xcarriagelength/2+stickoutR+wander-1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true);
+    
+        }
+  translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth*9,rodheight*9],center=true);      
+    }      
+}
+
+module LGX(){//LGX extruder side-mounted 
+color("grey")translate([0,-20-3,20+5])cube([50,40,40],center=true);
+}
+
+module bed(){
+color("red")translate([0,0,-abovebed])cube([70,70,0.5],center=true);
+}
+module bracket(){
+    rotate([0,0,180]){
+    translate([-21,rodwidth/2+0.3,-rodheight/2-sleevewall])sphere(noch*1.1);
+            translate([-21,-rodwidth/2-0.3,-rodheight/2-sleevewall])sphere(noch*1.1);}
+rotate([0,0,180])
+    
+color("green")difference(){
+    
+    union(){
+    translate([0,0,-(rodheight+2*sleevewall)/2])
+        minkowski(){
+        cube([xcarriagelength-2,rodwidth+2*sleevewall-2,rodheight+2*sleevewall-2],center=true);
+            sphere(1);
+            }
+   translate([0,7.3,-(rodheight+2*sleevewall)-noch+2.7])rotate([90,0,0])cylinder(3.8,noch*3,noch*5,center=true);
+         translate([0,-7.3,-(rodheight+2*sleevewall)-noch+2.7])rotate([90,0,0])cylinder(3.8,noch*5,noch*3,center=true);
+    translate([-21,rodwidth/2+0.3,-rodheight/2-sleevewall])sphere(noch*2);
+            translate([-21,-rodwidth/2-0.3,-rodheight/2-sleevewall])sphere(noch*2);    
+        }
+translate([-22,20,-rodheight/2-sleevewall])rotate([90,-90,0])linear_extrude(50)polygon([[-noch/2,rodheight/4],[-noch*2-margin,0],[-noch*2,-10],[-noch*2+margin*2,-10],[-noch*2,0],[0,rodheight/3-margin*4],[noch*2,0],[noch*2-margin*2,-10],[noch*2,-10],[noch*2+margin,0],[noch/2,rodheight/4],[0,rodheight/3-margin*2]]);
+
+translate([0,0,-(rodheight+2*sleevewall)/2])cube([xcarriagelength+1,rodwidth,rodheight],center=true);
+translate([0,0,-(rodheight+2*sleevewall)-noch+2.7])rotate([90,0,0])cylinder(rodwidth*3,noch,noch,center=true);
+    
+    //translate([-4.5,0,-(rodheight+2*sleevewall)-noch/5])rotate([90,0,0])cylinder(rodwidth*3,noch*2-margin,noch*2+margin,center=true);
+    translate([-3.5,0,-10])cube([16,rodwidth+margin,6.3],center=true);
+        translate([-4,0,-14.3])cube([19,19,8.3],center=true);
+        
+  rotate([90,0,0])translate([-20.8,-6,8])linear_extrude(5)text("REPRAP WILSON STYLE",2.6); 
+   rotate([90,0,0])translate([24,-6,-7.8])rotate([0,180,0])linear_extrude(5)text("MOTOR 21mm BED",2.8);   
+}
+
+}
+
+module switch(){
+translate([-6,0,-2*rodheight-sleevewall*2-margin*2])color("chocolate")difference(){
+cube([9.5,19.8,6.4],center=true);
+translate([9.5/2-2.9,+switchholedistance/2,0])cylinder(9.5,switchholedia/2,switchholedia/2,center=true);
+    translate([9.5/2-2.9,-switchholedistance/2,0])cylinder(9.5,switchholedia/2,switchholedia/2,center=true);
+}
+}
