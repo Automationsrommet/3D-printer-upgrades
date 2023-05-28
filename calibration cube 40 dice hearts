@@ -1,0 +1,66 @@
+//This is a calibration cube 40^3 mm^3 with secondary use as hearts dice
+$fn=42;
+difference(){
+minkowski(){
+    intersection(){
+cube(40-4,center=true);
+   sphere(27);     
+    }
+sphere(2);
+}
+numbers();
+}
+
+module numbers(){
+one();
+rotate([90,0,0])two();
+rotate([0,90,0])three();
+rotate([-90,0,0])four();
+rotate([0,-90,0])five();
+mirror([0,0,1])six();
+}
+module six(){
+    for(i=[-1:2:1]){
+        for(j=[-1:1:1]){
+ translate([i*9,j*9,0])heart();  
+    }
+} 
+}
+module five(){
+    four();
+    one();
+}
+module four(){
+    for(i=[-1:2:1]){
+        for(j=[-1:2:1]){
+ translate([i*9,j*9,0])heart();  
+    }
+} 
+}
+module three(){
+    for(i=[-1:1:1]){
+ translate([i*9,i*9,0])heart();  
+    } 
+}
+module two(){
+    for(i=[-1:2:1]){
+ translate([i*9,i*9,0])heart();  
+    } 
+}
+module one(){
+ heart();   
+}
+
+module heart(){
+color("pink")
+minkowski(){
+translate([0,-1,20]){
+    rotate([0,0,45])cube([2,2,2],center=true);
+    translate([0.8,0.8,0])rotate([0,0,45])cube([2,2,2],center=true);
+    translate([-0.8,0.8,0])rotate([0,0,45])cube([2,2,2],center=true);
+    translate([1.7,1.7,0])cylinder(2,1,1,center=true);
+    translate([-1.7,1.7,0])cylinder(2,1,1,center=true);
+}
+sphere(0.8);
+}
+}
