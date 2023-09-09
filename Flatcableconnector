@@ -10,7 +10,7 @@ pluglengthlower=2;
 
 //Usage: Uncomment the thing you want to export
 socket();
-plug();
+//plug();
 
 module plug(){
 difference(){
@@ -37,11 +37,11 @@ translate([-53+25,62,8])rotate([90,0,0])cylinder(27,2,2,center=true,$fn=5);
 
 color("pink")difference(){
     translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,-1+4])rotate([0,0,180])linear_extrude(height=socketlengthlower)oshw_logo_2d(34.7);
-    holes(lowerholeSocket,socketlengthlower);
+    holes(upperholeSocket,socketlengthlower);
 }
 difference(){
     color("yellow")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,socketlengthlower+socketlengthlower])rotate([0,0,180])linear_extrude(height=socketlengthupper)oshw_logo_2ds(30);    
- holes(upperholeSocket,socketlengthupper);
+ holes(lowerholeSocket,socketlengthupper);
     translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+2,23])rotate([90,0,14])cylinder(100,0.6,0.6,center=true,$fn=25);
     translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+4,23])rotate([90,0,-14])cylinder(100,0.6,0.6,center=true,$fn=25);
  }     
