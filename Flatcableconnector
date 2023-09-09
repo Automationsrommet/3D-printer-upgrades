@@ -1,0 +1,103 @@
+//Input parameters
+upperholePlug=1.5;
+lowerholePlug=2.5;
+upperholeSocket=2.5;
+lowerholeSocket=2;
+socketlengthupper=9;
+socketlengthlower=3;
+pluglengthupper=2;
+pluglengthlower=2;
+
+//Usage: Uncomment the thing you want to export
+socket();
+plug();
+
+module plug(){
+difference(){
+     color("green")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,socketlengthlower+socketlengthlower])rotate([0,0,180])linear_extrude(height=pluglengthupper+pluglengthlower+socketlengthupper)oshw_logo_2d(34.7);
+        
+    minkowski(){
+    color("yellow")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,socketlengthlower+socketlengthlower])rotate([0,0,180])linear_extrude(height=socketlengthupper)oshw_logo_2ds(30);
+    sphere(0.3);
+    }
+holes(upperholeSocket,26.5);
+holes(lowerholeSocket,20);    
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+2,23])rotate([90,0,14])cylinder(100,0.75,0.6,center=true,$fn=25);
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+4,23])rotate([90,0,-14])cylinder(100,0.75,0.6,center=true,$fn=25);
+}
+}  
+module socket(){      
+color("green")
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,62-5,4.5])rotate([90,0,0])cube([21,socketlengthlower,14],center=true);
+    difference(){
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,62-9,7.5])rotate([90,0,0])cube([21,9,8.5],center=true);
+    translate([-66+25,62,8])rotate([90,0,0])cylinder(27,2,2,center=true,$fn=5);
+translate([-53+25,62,8])rotate([90,0,0])cylinder(27,2,2,center=true,$fn=5);
+}
+
+color("pink")difference(){
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,-1+4])rotate([0,0,180])linear_extrude(height=socketlengthlower)oshw_logo_2d(34.7);
+    holes(lowerholeSocket,socketlengthlower);
+}
+difference(){
+    color("yellow")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,socketlengthlower+socketlengthlower])rotate([0,0,180])linear_extrude(height=socketlengthupper)oshw_logo_2ds(30);    
+ holes(upperholeSocket,socketlengthupper);
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+2,23])rotate([90,0,14])cylinder(100,0.6,0.6,center=true,$fn=25);
+    translate([-66+25+((-53+25)-(-66+25))/2+0.5,75+4,23])rotate([90,0,-14])cylinder(100,0.6,0.6,center=true,$fn=25);
+ }     
+}
+ 
+// Modules
+
+module holes(dia, elevation){
+    for (i=[-3:1:3]){
+        color("pink")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,elevation])rotate([0,0,i*(360/8)])translate([0,-12,0])cylinder(20,dia/2,dia/2,center=true,$fn=25);
+        
+        color("pink")translate([-66+25+((-53+25)-(-66+25))/2+0.5,75,elevation])rotate([0,0,i*(360/8)])translate([0,-8,0])cylinder(20,dia/2,dia/2,center=true,$fn=25);
+    }
+}
+
+// Imported Modules:
+
+module gear_tooth_2ds(d) 
+{   polygon([[0.0,10.0*d/72.0], [0.5*d,d/24.0], 
+             [0.5*d,-d/24.0], [0.0,-10.0*d/72.0]] );
+}
+
+module oshw_logo_2ds(d=10.0)
+{   rotate(-135)
+    {   difference() 
+        {   union() 
+            {   circle(r=13.3*d/36.0,$fn=20);
+                for( a= [45: 45: 8*45] ) rotate(a) gear_tooth_2ds(d);
+            }
+            circle(r=15.0*d/72.0,$fn=20);
+            intersection() 
+            {   rotate(-14) square(size=[10.0*d/18.0,10.0*d/18.0]);
+                rotate(14)  square(size=[10.0*d/18.0,10.0*d/18.0]);
+            }
+        }
+    }
+}
+
+// usage : oshw_logo_2d(diameter)
+module gear_tooth_2d(d) 
+{   polygon([[0.0,10.0*d/72.0], [0.5*d,d/15.0], 
+             [0.5*d,-d/15.0], [0.0,-10.0*d/72.0]] );
+}
+
+module oshw_logo_2d(d=10.0)
+{   rotate(-135)
+    {   difference() 
+        {   union() 
+            {   circle(r=14.0*d/36.0,$fn=20);
+                for( a= [45: 45: 8*45] ) rotate(a) gear_tooth_2d(d);
+            }
+            circle(r=10.0*d/72.0,$fn=20);
+            intersection() 
+            {   rotate(-20) square(size=[10.0*d/18.0,10.0*d/18.0]);
+                rotate(20)  square(size=[10.0*d/18.0,10.0*d/18.0]);
+            }
+        }
+    }
+}
