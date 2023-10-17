@@ -27,15 +27,16 @@ $fn=detail;
 //Thermistor   -
 // Z-probe  +
 // Z-probe  -
-
+mirror([1,0])rotate(90){
 ramme();
 backstage();
+}
 
 module backstage(){
     difference(){
        union(){  
     difference(){
-    color("yellow")translate([0,0])minkowski(){
+    color("black")translate([0,0])minkowski(){
       square([width-3-iso,heigth-3-iso],center=true); circle(0.5);
         }
     } 
@@ -169,7 +170,7 @@ module line(startx,starty,endx,endy){
      polygon ([[startx-trace/2,starty],[startx-trace/2-iso,starty],[endx-trace/2-iso,endy],[endx-trace/2,endy]]);
 }
 module dot(angle,q){
-    color("red")rotate(angle)translate([0,-q/2-iso])circle(trace/2,$fn=detail);
+    color("black")rotate(angle)translate([0,-q/2-iso])circle(trace/2,$fn=detail);
 }
 module hole(angle,q){
     color("red")rotate(angle)translate([0,-q/2-iso])circle(0.3,$fn=5);
@@ -194,13 +195,13 @@ module gear_tooth_2d(d) {   polygon([[0.0,10.0*d/72.0], [0.5*d,d/15.0],
 }
 
 module ramme(){
-difference(){
+color("black")difference(){
     minkowski(){square([width-1,heigth-1],center=true); circle(0.5);}    
     minkowski(){square([width-3,heigth-3],center=true);circle(0.5);}
 }
 }
 module oshw_logo_2d(d=10.0){   rotate(-135)
-    {   difference() 
+    color("black"){   difference() 
         {   union() 
             {   circle(r=14.0*d/36.0,$fn=20);
                 for( a= [45: 45: 8*45] ) rotate(a) gear_tooth_2d(d);
