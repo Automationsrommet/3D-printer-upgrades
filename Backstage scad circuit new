@@ -11,7 +11,7 @@ trace=1.0;
 motorpos=[0,-16.5,-12.5];
 
 $fn=detail;
-    
+    //TODO: streker borehull Tredje hullplasseringtekster
 //14 ledere som følger:
 
 //Extrudermotor A1
@@ -42,60 +42,87 @@ module backstage(){
 }
 translate([0,heigth*0.23]){
     minkowski(){oshw_logo_2d(21); circle(iso);}
-    connarm(-80,19,5);    
+    connarm(-80,17,7.4);    
     connarm(72,16,8);    
-    connarm(-43,21,10);   
+    connarm(-43,21,11);   
     connarm(-65,16,9);   
     connarm(-110,16,8.5);   
     connarm(115,16,9);  
     connarm(31,16,11);    
     connarm(48,21,5);
-    connarm(90,21,4);
+    connarm(90,21,3.5);
     connarm(136,20,9.5);
     connarm(166,16,16);    
-    connarm(-172,20,17);
+    connarm(-175,18.5,17.6);
     connarm(-156,16,14);
     connarm(-126,15,11);
     }
 translate([0,heigth*-0.3]){minkowski(){oshw_logo_2d(17);circle(iso);}
 
     mirror([0,1])connarm(-138,17,14);
-    mirror([0,1])connarm(-115,14,14);
-    mirror([0,1])connarm(-90,17,11);
-    mirror([0,1])connarm(-70,14,9);
-    mirror([0,1])connarm(-45,17,5);
-    mirror([0,1])connarm(-25,14,5);
-    mirror([0,1])connarm(-5,17,5);
-    mirror([0,1])connarm(20,14,8);
+    mirror([0,1])connarm(-115,13,14.5);
+    mirror([0,1])connarm(-90,17,12);
+    mirror([0,1])connarm(-70,13,19.5);
+    mirror([0,1])connarm(-45,17,35);
+    mirror([0,1])connarm(-26,13,6);
+    mirror([0,1])connarm(-10.5,13,25);
+    mirror([0,1])connarm(20,13,8);
     mirror([0,1])connarm(40,17,7);
-    mirror([0,1])connarm(60,14,9);
+    mirror([0,1])connarm(65,13,10);
     mirror([0,1])connarm(90,17,4);
-    mirror([0,1])connarm(115,14,9);
+    mirror([0,1])connarm(110,13,10);
     mirror([0,1])connarm(132,17,10);
-    mirror([0,1])connarm(150,14,15);
+    mirror([0,1])connarm(150,13,15.2);
 }
         for(l=[-1:2:1]){
-    color("red")translate([11*l,heigth*0.45])circle(1.5);            
-    color("red")translate([0,heigth*0.30-42.5-8])circle(1.5);   
+    color("red")translate([11*l,heigth*0.45])circle(1.3);            
+    color("red")translate([0,heigth*0.30-42.5-8])circle(1.3);   
     }
+    line(-18.5,25.0,-18,-22.5);
+    line(-16.7,21.0,-16.2,-18);
+    line(-14.8,16.1,-14.5,-15.2);    
+    line(-13.2,15.4,-12.5,-9.2);
+    line(-11.5,11.2,-11.2,-2.1);
+    line(-9.9,9.1,-9.9,-2);
+    line(-9.9,-2,-9,-7);
+    line(-9,-7,-8,-8);
+    line(-8,-8,-3.1,-14);
+    line(-8.6,5.2,-8.6,-0);
+    line(-8.6,0,-8,-5);
+    line(-8,-5,-7,-7);
+    line(-7,-7,-1.3,-12.5);
+    line(5,6.5,2.5,-13.6);
+    line(8.6,7.3,6.3,-12.3);
+    line(10.4,9.8,8.8,-13.8);
+    line(12.2,14.5,10.5,-19.3);
+    line(13.6,16,12.7,-19.5);
+    line(15.2,20,14.7,-22.5);
+    line(17.8,21,17.5,-22.4);
+    
+    translate([-7.9,3])text("GEROLF",2.07);
+    translate([-7.8,0])text("BACKSTAGE",1.35);
+    translate([-7.5,-2])text("OPENSCAD",1.4);
+    translate([-6,-4])text("CIRCUIT",1.4);
+    translate([-4,-7])text("Melbu",1.4);    
+    translate([-3,-9])text("2023",1.4);
     } 
 translate([0,heigth*0.23]){
     sliced(21); 
- dot(90,21);
+ dot(90,20.5);
  dot(-80,19);    
     dot(72,16);    
-    dot(-43,21);   
+    dot(-43,20.5);   
     dot(-65,16);   
     dot(-110,16);   
     dot(115,16);  
     dot(31,16);    
-    dot(48,21);
-    dot(136,20);
+    dot(48,20.5);
+    dot(136,20.5);
     dot(166,16);    
-    dot(-172,20);
+    dot(-175,20.5);
     dot(-156,16);
-    dot(-126,15);
-   
+    dot(-126,17);   
+    dot(-125,18);  
     }
 translate([0,heigth*-0.3]){
     sliced(17); 
@@ -105,18 +132,24 @@ translate([0,heigth*-0.3]){
     mirror([0,1])dot(-70,12.5);
     mirror([0,1])dot(-45,17);
     mirror([0,1])dot(-25,12.5);
-    mirror([0,1])dot(-5,17);
+    mirror([0,1])dot(-10,15);
+    mirror([0,1])dot(-10,16);
     mirror([0,1])dot(20,12.5);
     mirror([0,1])dot(40,17);
-    mirror([0,1])dot(60,12.5);
+    mirror([0,1])dot(65,12.5);
     mirror([0,1])dot(90,17);
-    mirror([0,1])dot(115,12.5);
+    mirror([0,1])dot(110,12.5);
     mirror([0,1])dot(132,17);
     mirror([0,1])dot(150,12.5); 
-}  
+}
+}
+module line(startx,starty,endx,endy){
+    
+   polygon ([[startx+trace/2,starty],[startx+trace/2+iso,starty],[endx+trace/2+iso,endy],[endx+trace/2,endy]]);
+     polygon ([[startx-trace/2,starty],[startx-trace/2-iso,starty],[endx-trace/2-iso,endy],[endx-trace/2,endy]]);
 }
 module dot(angle,q){
-    color("red")rotate(angle)translate([0,-q/2-iso])circle(trace/2,$fn=5);
+    color("red")rotate(angle)translate([0,-q/2-iso])circle(trace/2,$fn=detail);
 }
 module connarm(angle,q,bend){
     difference(){
@@ -128,9 +161,9 @@ module conn(gangle,qr,brend,isolation){
 rotate(gangle)translate([0,-qr/2])rotate(-90)translate([0,-brend/2*gangle/abs(gangle)])
 for(i=[0:gangle/detail:gangle]){
     rotate(-i)translate([(gangle*brend*3.14/detail/360)/2*gangle/abs(gangle),brend/2*gangle/abs(gangle)])
-    square([abs(gangle)*brend*3.14/detail/360,trace+isolation*2],center=true);
-    rotate(-i)translate([0,brend/2*gangle/abs(gangle)])
-    circle(trace/2+isolation);
+    square([abs(gangle)*brend*3.14/detail/300,trace+isolation*2],center=true);
+    //rotate(-i)translate([0,brend/2*gangle/abs(gangle)])
+    //circle(trace/2+isolation);
 }
 }
 module gear_tooth_2d(d) {   polygon([[0.0,10.0*d/72.0], [0.5*d,d/15.0], 
