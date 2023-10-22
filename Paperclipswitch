@@ -1,0 +1,198 @@
+//Together we will drive down the cost of making RepRap printers.
+//Paperclip is used to replace typical endstop microswitch
+
+//Input parameters:
+cliplength=30;
+clipshortlength=13;
+clipwidth=8;
+clipdiameter=0.9;
+frontbendradius=3;
+backbendradius=2;
+
+switchl=17;
+switchw=8;
+switchh=10;
+switchholedistance=9.5;
+switchholedia=2.5;
+$fn=7;
+
+
+microswitchhouse();
+translate([0,6,3])rotate([8,0,0])anode();
+translate([0,9,5])rotate([7,0,0])cathode();
+//paperclip();
+//pliers();
+//solderiron();
+
+
+
+module paperclip(){
+   for(i=[-1:2:1]){
+      translate([i*clipwidth/2-i*clipdiameter/2,0,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(cliplength-frontbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+       
+       translate([i*clipwidth/2-i*clipdiameter*1.7,-clipdiameter,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(cliplength-frontbendradius-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+   } 
+   
+   translate([0,cliplength/2-clipdiameter/2+(frontbendradius-backbendradius),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-frontbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([clipdiameter/2,-(cliplength/2-clipdiameter/2-
+   (frontbendradius-backbendradius)),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-backbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([0,cliplength/2-clipdiameter*3.7+(frontbendradius-backbendradius),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
+   
+   for(j=[0:90/$fn:90+0.1]){
+       for(k=[-1:2:1]){
+      
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius),0])
+       rotate([0,0,j*k+90])
+       translate([frontbendradius,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+          
+           
+   translate([+k*(clipwidth-backbendradius*2)/2+(backbendradius*3.15/2/$fn)/2+clipdiameter/2-clipdiameter/7,-(cliplength/2-backbendradius+(backbendradius-frontbendradius)/2+clipdiameter+(backbendradius-frontbendradius)),0])
+       rotate([0,0,j*k-90])
+       translate([backbendradius/2,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
+           
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius)-clipdiameter*2,0])
+       rotate([0,0,j*k+90])
+       translate([backbendradius-clipdiameter/9,0,0])
+       rotate([90,36,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+           }
+   }
+}
+
+module anode(){
+   for(i=[-1:2:1]){
+      translate([i*clipwidth/2-i*clipdiameter/2,0,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(cliplength-frontbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+    } 
+   
+   translate([0,cliplength/2-clipdiameter/2+(frontbendradius-backbendradius),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-frontbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([clipdiameter/2+(clipwidth-backbendradius*2)/4,-(cliplength/2-clipdiameter/2-
+   (frontbendradius-backbendradius)),0])
+       rotate([0,90,0])
+       cylinder((clipwidth-backbendradius*2)/2,clipdiameter/2,clipdiameter/2, center=true);
+   
+      
+   for(j=[0:90/$fn:90+0.1]){
+       for(k=[-1:2:1]){
+      
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius),0])
+       rotate([0,0,j*k+90])
+       translate([frontbendradius,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+          
+           
+   translate([+(clipwidth-backbendradius*2)/2+(backbendradius*3.15/2/$fn)/2+clipdiameter/2-clipdiameter/7,-(cliplength/2-backbendradius+(backbendradius-frontbendradius)/2+clipdiameter+(backbendradius-frontbendradius)),0])
+       rotate([0,0,j-90])
+       translate([backbendradius/2,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
+           
+               }
+   }
+
+}
+
+module cathode(){
+   for(i=[-1:2:1]){
+         
+       translate([i*clipwidth/2-i*clipdiameter*1.7,-clipdiameter,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(cliplength-frontbendradius-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+   } 
+   
+   translate([clipdiameter/2-(clipwidth-backbendradius*2)/4,-(cliplength/2-clipdiameter/2-
+   (frontbendradius-backbendradius)),0])
+       rotate([0,90,0])
+       cylinder((clipwidth-backbendradius*2)/2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([0,cliplength/2-clipdiameter*3.7+(frontbendradius-backbendradius),0])       rotate([0,90,0])       cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
+   
+   for(j=[0:90/$fn:90+0.1]){
+       for(k=[-1:2:1]){
+         
+   translate([-(clipwidth-backbendradius*2)/2+(backbendradius*3.15/2/$fn)/2+clipdiameter/2-clipdiameter/7,-(cliplength/2-backbendradius+(backbendradius-frontbendradius)/2+clipdiameter+(backbendradius-frontbendradius)),0])
+       rotate([0,0,-j-90])
+       translate([backbendradius/2,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
+           
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius)-clipdiameter*2,0])
+       rotate([0,0,j*k+90])
+       translate([backbendradius-clipdiameter/9,0,0])
+       rotate([90,36,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+   }
+   }
+  
+}
+
+module microswitchhouse(){
+    rotate([0,90,0])switch();
+    
+}
+
+module wire(){
+    translate([0,0,0])rotate([0,0,0])cylinder(30,1,1,center=false);
+    translate([0,0,0])rotate([0,0,0])cylinder(30,1,1,center=false);
+}
+
+
+module solder(){
+    sphere(2);
+}
+
+module solderroom(){
+    sphere(4);
+}
+
+module solderiron(){
+    color("silver")rotate([90-20,0,0])
+    translate([0,0,50])cylinder(150,1,10,center=true,$fn=4);
+    color("silver")rotate([90-20,0,0])
+    translate([0,0,10])cylinder(40,4,4,center=true,$fn=6);
+    color("silver")rotate([0,90,0])
+    cylinder(8,2,2,center=true,$fn=6);
+    color("red")rotate([90-20,0,0])
+    translate([0,0,75])cylinder(100,6,12,center=true,$fn=4);
+}
+
+module pliers(){
+    color("silver")rotate([90-20,0,0])
+    translate([0,0,30])cylinder(150,0,10,center=true,$fn=4);
+    color("silver")rotate([90+20,0,0])
+    translate([0,0,30])cylinder(150,0,10,center=true,$fn=4);
+    color("silver")rotate([0,90,0])
+    cylinder(15,10,10,center=true,$fn=6);
+    color("red")rotate([90-20,0,0])
+    translate([0,0,65])cylinder(90,6,12,center=true,$fn=4);
+    color("red")rotate([90+20,0,0])
+    translate([0,0,65])cylinder(90,6,12,center=true,$fn=4);    
+}
+module switch(){
+color("chocolate")difference(){
+cube([switchh,switchl,switchw],center=true);
+translate([9.5/2-2.9,switchholedistance/2,0])cylinder(9.5,switchholedia/2,switchholedia/2,center=true);
+    translate([9.5/2-2.9,-switchholedistance/2,0])cylinder(switchw*2,switchholedia/2,switchholedia/2,center=true);
+}
+}
