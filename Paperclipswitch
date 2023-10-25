@@ -2,12 +2,12 @@
 //Paperclip is used to replace typical endstop microswitch
 
 //Input parameters:
-cliplength=30;
-clipshortlength=13;
-clipwidth=8;
+cliplength=25.2;
+clipshortlength=18;
+clipwidth=7.5;
 clipdiameter=0.9;
 frontbendradius=3;
-backbendradius=2;
+backbendradius=1.9;
 
 
 switchl=17;
@@ -18,26 +18,34 @@ switchholedia=2.5;
 $fn=7;
 
 difference(){
-microswitchhouse();
-translate([0,6,3])rotate([8,0,0])anode();
-translate([0,9,5])rotate([7,0,0])cathode();
-//paperclip();
-//pliers();
-//solderiron();
+ 
+union(){   
+//microswitchtop();
+//microswitchmiddle();
+microswitchbase();
+ }
+
+translate([0,(cliplength-clipshortlength)/3-clipdiameter/2,2.5])rotate([8,0,0])anode();
+translate([0,clipshortlength/2-clipdiameter/2,4.9])rotate([7,0,0])cathode();
+//color("red")anode();
+//color("gold")cathode();
 translate([3.5,-3,2])solder();
 translate([-2.5,1,4])solder();
 translate([5.5,-3,1.5])solderroom();
 translate([-4.5,1,5])solderroom();
 }
-color("gold")
-{translate([0,6,3])rotate([8,0,0])anode();
-translate([0,9,5])rotate([7,0,0])cathode();}
-color("silver"){
-    translate([3.5,-3,2])solder();
-    translate([-2.5,1,4])solder();
-}
-translate([3.5,-3,2])rotate([0,90,0])wire();
-    translate([-2.5,1,4])rotate([0,-90,0])wire();
+//color("gold")
+//{translate([0,(cliplength-clipshortlength)/3-clipdiameter/2,2.5])rotate([8,0,0])anode();
+//translate([0,clipshortlength/2-clipdiameter/2,4.9])rotate([7,0,0])cathode();}
+//color("silver"){
+//    translate([3.5,-3,2])solder();
+//    translate([-2.5,1,4])solder();
+//}
+//translate([3.5,-3,2])rotate([0,90,0])wire();
+//translate([-2.5,1,4])rotate([0,-90,0])wire();
+//paperclip();
+//pliers();
+//solderiron();
 
 module paperclip(){
    for(i=[-1:2:1]){
@@ -45,21 +53,20 @@ module paperclip(){
        rotate([90,360/$fn/1.9*i,0])
        cylinder(cliplength-frontbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
        
-       translate([i*clipwidth/2-i*clipdiameter*1.7,-clipdiameter,0])
+       translate([i*clipwidth/2-i*clipdiameter*1.7,-(cliplength-clipshortlength)/3-clipdiameter/2,0])
        rotate([90,360/$fn/1.9*i,0])
-       cylinder(cliplength-frontbendradius-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+       cylinder(clipshortlength-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
    } 
    
    translate([0,cliplength/2-clipdiameter/2+(frontbendradius-backbendradius),0])
        rotate([0,90,0])
        cylinder(clipwidth-frontbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
    
-   translate([clipdiameter/2,-(cliplength/2-clipdiameter/2-
-   (frontbendradius-backbendradius)),0])
+   translate([clipdiameter/2,-(cliplength/2-clipdiameter/2-   (frontbendradius-backbendradius)),0])
        rotate([0,90,0])
        cylinder(clipwidth-backbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
    
-   translate([0,cliplength/2-clipdiameter*3.7+(frontbendradius-backbendradius),0])
+   translate([0,-cliplength/2+clipshortlength+clipdiameter,0])
        rotate([0,90,0])
        cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
    
@@ -79,7 +86,7 @@ module paperclip(){
        rotate([90,360/$fn/2,0])
        cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
            
-           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius)-clipdiameter*2,0])
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,-cliplength/2+clipshortlength-clipdiameter,0])
        rotate([0,0,j*k+90])
        translate([backbendradius-clipdiameter/9,0,0])
        rotate([90,36,0])
@@ -129,9 +136,9 @@ module anode(){
 module cathode(){
    for(i=[-1:2:1]){
          
-       translate([i*clipwidth/2-i*clipdiameter*1.7,-clipdiameter,0])
+         translate([i*clipwidth/2-i*clipdiameter*1.7,-(cliplength-clipshortlength)/3-clipdiameter/2,0])
        rotate([90,360/$fn/1.9*i,0])
-       cylinder(cliplength-frontbendradius-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+       cylinder(clipshortlength-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
    } 
    
    translate([clipdiameter/2-(clipwidth-backbendradius*2)/4,-(cliplength/2-clipdiameter/2-
@@ -139,7 +146,9 @@ module cathode(){
        rotate([0,90,0])
        cylinder((clipwidth-backbendradius*2)/2,clipdiameter/2,clipdiameter/2, center=true);
    
-   translate([0,cliplength/2-clipdiameter*3.7+(frontbendradius-backbendradius),0])       rotate([0,90,0])       cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
+  translate([0,-cliplength/2+clipshortlength+clipdiameter,0])
+       rotate([0,90,0])
+       cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
    
    for(j=[0:90/$fn:90+0.1]){
        for(k=[-1:2:1]){
@@ -150,7 +159,7 @@ module cathode(){
        rotate([90,360/$fn/2,0])
        cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
            
-           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius)-clipdiameter*2,0])
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,-cliplength/2+clipshortlength-clipdiameter,0])
        rotate([0,0,j*k+90])
        translate([backbendradius-clipdiameter/9,0,0])
        rotate([90,36,0])
@@ -160,36 +169,40 @@ module cathode(){
   
 }
 
-module microswitchhouse(){
-    difference(){
- union(){
-microswitchtop();
-microswitchmiddle();
-microswitchbase();
- }
- translate([0,-1,5])cylinder(40,0.8,0.8,center=true); 
- translate([0,-1,5])cylinder(5,0,3,center=true);
- }
-}
 module microswitchtop(){
+    difference(){
 color("chocolate")intersection(){
 rotate([0,90,0])switch();
 translate([0,6,6.1])rotate([8,0,0])cube([200,200,2.5],center=true);
-    }}
+    }
+    screw();
+}
+    }
 module microswitchmiddle(){
+    difference(){
     color("green")intersection(){
 rotate([0,90,0])switch();
         union(){
 translate([0,6,4.3])rotate([8,0,0])cube([200,200,1],center=true);
 translate([0,9,3.7])rotate([7,0,0])cube([200,200,1],center=true);
         }
+    } 
+        screw();
+}
     }
-    }
-module microswitchbase(){color("chocolate")intersection(){
+module microswitchbase(){
+    difference(){
+    color("chocolate")intersection(){
 rotate([0,90,0])switch();
 translate([0,6,-2])rotate([8,0,0])cube([200,200,9.9],center=true);
-    }}
-
+    }
+    screw();
+}
+    }
+module screw(){
+translate([0,-1,5])cylinder(40,0.8,0.8,center=true); 
+ translate([0,-1,5])cylinder(5,0,3,center=true);
+}
 module wire(){
     color("red")translate([0,0,05])rotate([0,0,0])cylinder(40,1,1,center=false);
     color("silver")translate([0,0,00])rotate([0,0,0])cylinder(50,0.5,0.5,center=false);
