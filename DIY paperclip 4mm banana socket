@@ -1,5 +1,5 @@
 //Together we will drive down the cost of making Electronics
-//Paperclips are used to replace typical 4mm banana jack socket
+//Paperclip is used to replace typical 4mm banana jack socket
 
 //Input parameters:
 cliplength=25.2;
@@ -14,11 +14,14 @@ panelbend=2;
 margin=0.1;
 
 $fn=7;
-//for(i=[-90:180:180])
-//color("gold")rotate([0,i,0])translate([0,0,2])
-//paperclip();
-//plug();
-//base();
+for(i=[-90:180:180])
+for(k=[-1:2:1])
+        translate([k*6,0,0])color("gold")rotate([0,i,0])translate([0,0,2])
+paperclip();
+for(l=[-1:2:1])
+        translate([l*6,25,0])plug();
+for(j=[-1:2:1])
+        translate([j*6,0,0])base();
 panel();
 
 module holes(){
