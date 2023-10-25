@@ -1,5 +1,5 @@
 //Together we will drive down the cost of making Electronics
-//Paperclip is used to replace typical 4mm banana jack socket
+//Paperclips are used to replace typical 4mm banana jack socket
 
 //Input parameters:
 cliplength=25.2;
@@ -8,6 +8,9 @@ clipwidth=7.5;
 clipdiameter=0.9;
 frontbendradius=3;
 backbendradius=1.9;
+panelh=29.5;
+panelw=25.5;
+panelbend=2;
 margin=0.1;
 
 $fn=7;
@@ -15,11 +18,43 @@ $fn=7;
 //color("gold")rotate([0,i,0])translate([0,0,2])
 //paperclip();
 //plug();
-base();
+//base();
+panel();
 
-module panel(){
+module holes(){
+    for(i=[-1:2:1])
+    translate([0,i*6.6,0])cylinder(0.5,5.5,5,center=true,$fn=20);
+   for(j=[-1:2:1])
+    translate([0,j*clipwidth/2+4*j,0])cylinder(5,1.3,1.3,center=true,$fn=20); 
+ cylinder(20,2+margin,2+margin,$fn=20); 
+   minkowski(){
+ cube([10,clipwidth-2.6,1 ],center=true);
+    sphere(1);  
+   } 
 }
+module panel(){
+    translate([0,20,0])rotate([-90,0,0]){
+    translate([0,0,2])linear_extrude(2)difference(){
+    plate(2);
+    plate(-2);
+    }
+    
+    difference(){
+        translate([0,0,0])linear_extrude(2)plate(-margin*2);
+       for(i=[-1:2:1])
+        translate([i*6,0,0])holes();
+}
+translate([-10.5,3,1.5])linear_extrude(1)text("+           -",4);
 
+translate([-9.8,10.2,1.5])linear_extrude(1)text("Spenning inn",2.5);
+}
+}
+module plate(edge){
+    minkowski(){
+        square([panelw+edge-2*panelbend,panelh+edge-2*panelbend],center=true);
+        circle(panelbend,$fn=16);
+    }
+}
 module base(){
     
     difference(){        
