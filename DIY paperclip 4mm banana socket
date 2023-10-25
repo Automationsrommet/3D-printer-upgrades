@@ -1,0 +1,112 @@
+//Together we will drive down the cost of making Electronics
+//Paperclip is used to replace typical 4mm banana jack socket
+
+//Input parameters:
+cliplength=25.2;
+clipshortlength=18;
+clipwidth=7.5;
+clipdiameter=0.9;
+frontbendradius=3;
+backbendradius=1.9;
+margin=0.1;
+
+$fn=7;
+//for(i=[-90:180:180])
+//color("gold")rotate([0,i,0])translate([0,0,2])
+//paperclip();
+//plug();
+base();
+
+module panel(){
+}
+
+module base(){
+    
+    difference(){        
+     translate([0,-cliplength/2+6.5,0])
+    cube([clipwidth+1,13,clipwidth],center=true); 
+    
+        for(i=[-1:2:1])        
+  translate([2*i,-cliplength/2+7,0])
+    cube([clipdiameter+margin*2,12+margin,clipwidth+margin*2],center=true); 
+    
+   translate([0,-cliplength/2-1,0])
+    rotate([0,90,0])cylinder(13,3.4,3.4,center=true,$fn=12); 
+}
+difference(){
+union(){
+ for(j=[-1:2:1])    
+translate([0,0.5,j*clipwidth/2+2*j])
+    cube([8,cliplength+1,4],center=true);
+
+ for(k=[-1:2:1])    
+translate([0,3.6,k*clipwidth/2+4*k])
+    rotate([90,0,0])cylinder(20,4,0,center=true); 
+} 
+for(l=[-1:2:1])    
+translate([0,4.2,l*clipwidth/2+4*l])
+    rotate([90,0,0])cylinder(19.2,1+margin,0.4+margin,center=true);
+}
+ for(m=[-1:2:1])    
+translate([0,1.5,m*(3+margin)])
+    cube([2,cliplength-1,2],center=true);
+
+    //translate([0,-cliplength/2+4,0])
+    //cylinder(2.5,1.9,1.9,center=true,$fn=12);
+}
+
+module plug(){
+color("silver")translate([0,24,0])rotate([90,0,0])
+    {
+cylinder(10,4,4,center=false);  
+cylinder(20,2,2,center=false); 
+translate([0,0,20])sphere(2);  
+}
+}
+
+module paperclip(){
+   for(i=[-1:2:1]){
+      translate([i*clipwidth/2-i*clipdiameter/2,0,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(cliplength-frontbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+       
+       translate([i*clipwidth/2-i*clipdiameter*1.7,-(cliplength-clipshortlength)/3-clipdiameter/2,0])
+       rotate([90,360/$fn/1.9*i,0])
+       cylinder(clipshortlength-backbendradius-backbendradius,clipdiameter/2,clipdiameter/2, center=true);
+   } 
+   
+   translate([0,cliplength/2-clipdiameter/2+(frontbendradius-backbendradius),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-frontbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([clipdiameter/2,-(cliplength/2-clipdiameter/2-   (frontbendradius-backbendradius)),0])
+       rotate([0,90,0])
+       cylinder(clipwidth-backbendradius*2,clipdiameter/2,clipdiameter/2, center=true);
+   
+   translate([0,-cliplength/2+clipshortlength+clipdiameter,0])
+       rotate([0,90,0])
+       cylinder(clipwidth-backbendradius*2-clipdiameter*2.5,clipdiameter/2,clipdiameter/2, center=true);
+   
+   for(j=[0:90/$fn:90+0.1]){
+       for(k=[-1:2:1]){
+      
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,cliplength/2-frontbendradius+(frontbendradius-backbendradius)/2-clipdiameter+(frontbendradius-backbendradius),0])
+       rotate([0,0,j*k+90])
+       translate([frontbendradius,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+                     
+   translate([+k*(clipwidth-backbendradius*2)/2+(backbendradius*3.15/2/$fn)/2+clipdiameter/2-clipdiameter/7,-(cliplength/2-backbendradius+(backbendradius-frontbendradius)/2+clipdiameter+(backbendradius-frontbendradius)),0])
+       rotate([0,0,j*k-90])
+       translate([backbendradius/2,0,0])
+       rotate([90,360/$fn/2,0])
+       cylinder(backbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true);    
+           
+           translate([-k*(clipwidth-frontbendradius*2)/2+k*(frontbendradius*3.15/2/$fn)/2+k*clipdiameter/7,-cliplength/2+clipshortlength-clipdiameter,0])
+       rotate([0,0,j*k+90])
+       translate([backbendradius-clipdiameter/9,0,0])
+       rotate([90,36,0])
+       cylinder(frontbendradius*3.15/2/$fn+clipdiameter/4,clipdiameter/2,clipdiameter/2, center=true); 
+           }
+   }
+}
