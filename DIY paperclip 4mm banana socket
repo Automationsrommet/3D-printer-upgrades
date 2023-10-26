@@ -11,7 +11,7 @@ backbendradius=1.9;
 panelh=29.5;
 panelw=25.5;
 panelbend=2;
-margin=0.1;
+margin=0.3;
 
 $fn=7;
 for(i=[-90:180:180])
