@@ -11,13 +11,15 @@ thickness=3;
 motorpos=[0,-16.5,-12.5];
 
 xcarriagelength=49;
-stickoutL=21;
-stickoutR=16;
-wander=5;
+stickoutL=12;
+stickoutR=13;
+wander=7.5;
+shoesize=4;
+shoelength=13;
 holedistance=30;
 holediameter=3;
 abovebed=15;
-rodlength=xcarriagelength+stickoutL+stickoutR+wander;
+rodlength=xcarriagelength+stickoutL+stickoutR+wander-2*shoesize;
 rodwidth=14;
 rodheight=9;
 sleevewall=1.9;
@@ -33,9 +35,9 @@ $fn=30;
 vogn();
 //middle();
 
-translate([0,-38,-3])rotate([-90,180,0])arm();
-translate([0,-38,-3])rotate([-90,180,0])shoes();
-translate([0,-38,-3])rotate([-90,180,0])rod();
+//translate([0,-38,-3])rotate([-90,180,0])arm();
+//translate([0,-38,-3])rotate([-90,180,0])shoes();
+//translate([0,-38,-3])rotate([-90,180,0])rod();
 
 //Props:
 //switch();
@@ -62,15 +64,15 @@ translate([-33/2,12.5,0])cylinder(60,2,2,center=true);
 
 translate([33/2,12.5,-16])minkowski(){sphere(2); cylinder(10,4,2,center=true,$fn=6);}
     translate([-33/2,12.5,-16])minkowski(){sphere(2); cylinder(10,4,2,center=true,$fn=6);}
-    translate([21,27,-10])rotate([0,180,0])linear_extrude(5)text("X-vogn-blandings",4);
-    translate([20.8,21,-10.5])rotate([0,180,0])linear_extrude(5)text("for Bondtech LGX",3.8);
-    translate([20.3,17,-10.5])rotate([0,180,0])linear_extrude(5)text("av Prusa, Wilson og Gerolf",2.5);
+    translate([23,27,-10])rotate([0,180,0])linear_extrude(5)text("X-carriage inspired",4);
+    translate([20.8,21,-10.5])rotate([0,180,0])linear_extrude(5)text("by Prusa & Wilson",3.8);
+    translate([20.3,17,-10.5])rotate([0,180,0])linear_extrude(5)text("REPRAP 3D-PRINTERS",2.5);
     translate([22,32.0,-0])rotate([-90,180,0])linear_extrude(5)text("Automationsrommet",3.6);
     translate([07.5,32.0,-5])rotate([-90,180,0])linear_extrude(5)text("at github.com",3.6);
     translate([18,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
     translate([08,32,-7.5])rotate([90,0,0])cylinder(12,1.5,1.5,center=true,$fn=5);
     translate([-14,-37.5,5])linear_extrude(5)text("ABL Z-PROBE",3.1);
-   rotate([0,0,180])translate([-23.0,21,-10])rotate([90,0,-90])linear_extrude(5)text("45mm between rods",3.6);
+   //rotate([0,0,180])translate([-23.0,21,-10])rotate([90,0,-90])linear_extrude(5)text("45mm between rods",3.6);
     translate([0,9,-10.5])minkowski(){sphere(2); cube([12,8,2.1],center=true);}
     translate([0,13.5,-10.5])minkowski(){sphere(1); cube([14,1,31],center=true);}
     translate([11,13.5,-1])rotate([00,0,0])cylinder(14,1.5,1.5,center=true,$fn=5);
@@ -504,7 +506,22 @@ module right_belt_cut()
 
 module rod(){
 color("orange")difference(){
+    
+    union(){
 translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth-margin,rodheight-margin],center=true);
+        
+     //   shoe-connectors
+translate([-xcarriagelength/2-stickoutL+shoesize,0,-6.5])
+        minkowski(){
+            rotate([0,90,0])cylinder(4.5,2,3,center=true,$fn=6);
+        sphere(1,$fn=6);
+            }
+translate([+xcarriagelength/2+stickoutR+wander-shoesize,0,-6.5])
+            minkowski(){
+            rotate([0,90,0])cylinder(4.5,3,2,center=true,$fn=6);
+                sphere(1,$fn=6);
+            }    
+    }
  for(i=[0:2.5:8]){ 
      translate([10+i,20,-rodheight-sleevewall+3.5])rotate([90,0,0])linear_extrude(50)polygon([[-noch/2-0.2,rodheight/4],[-noch*0.7-0.3,0.5-margin],
     [noch*0.7+0.3,0.5-margin],[noch/2+0.2,rodheight/4],[0.3,rodheight*0.38],[-0.3,rodheight*0.38]]);
@@ -519,9 +536,10 @@ translate([-20+k,rodwidth/2+1.2,-rodheight/2-sleevewall])sphere(noch*3);
 translate([-20+k,-rodwidth/2-1.2,-rodheight/2-sleevewall])sphere(noch*3);  
 }
 //shoe holes
-translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*5,noch*7,19],center=true);
-translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*5,noch*7,19],center=true);
+translate([-xcarriagelength/2-stickoutL,0,-6.5])rotate([0,90,0])cylinder(19,1.5,1.5,center=true,$fn=5);
+translate([+xcarriagelength/2+stickoutR+wander,0,-6.5])rotate([0,90,0])cylinder(19,1.5,1.5,center=true,$fn=5);
 }
+//translate([+xcarriagelength/2+stickoutR+wander,0,-6.5])rotate([0,90,0])cylinder(40,1.4,1.4,center=true);
 }
 
 
@@ -553,17 +571,28 @@ translate([holedistance/2,0,2.5])rotate([90,0,0])cylinder(6,holediameter/2,holed
 }
 }
 module shoes(){
-    color("purple")intersection(){
+difference(){
     union(){
-translate([-xcarriagelength/2-stickoutL,0,0])rotate([0,-45,0])cube([noch*2,noch*4,16],center=true);
-translate([+xcarriagelength/2+stickoutR+wander,0,0])rotate([0,45,0])cube([noch*2-margin*2,noch*4-2*margin,16-margin],center=true);
+color("purple")translate([-xcarriagelength/2-stickoutL,0,-6.5])rotate([0,90,0])linear_extrude(shoesize)
+    polygon([[rodheight/2,rodwidth/2],[-rodheight/2,rodwidth/2],[-rodheight/2-shoelength+1,1],[-rodheight/2-shoelength,0],[-rodheight/2-shoelength+1,-1],[-rodheight/2,-rodwidth/2],[rodheight/2,-rodwidth/2]]);
     
-    translate([-xcarriagelength/2-stickoutL+1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true); 
-    translate([+xcarriagelength/2+stickoutR+wander-1.5,0,2])rotate([0,90,0])cylinder(3,holediameter*1.2,holediameter*1.2,center=true);
-    
-        }
-  translate([stickoutR/2-stickoutL/2+wander/2,0,-(rodheight+2*sleevewall)/2])cube([rodlength,rodwidth*9,rodheight*9],center=true);      
-    }      
+color("purple")translate([+xcarriagelength/2+stickoutR+wander-shoesize,0,-6.5])rotate([0,90,0])linear_extrude(shoesize)polygon([[rodheight/2,rodwidth/2],[-rodheight/2,rodwidth/2],[-rodheight/2-shoelength+1,1],[-rodheight/2-shoelength,0],[-rodheight/2-shoelength+1,-1],[-rodheight/2,-rodwidth/2],[rodheight/2,-rodwidth/2]]);
+    }
+//shoe holes
+translate([-xcarriagelength/2-stickoutL,0,-6.5])rotate([0,90,0])cylinder(3,2.5,1.5,center=true,$fn=5);
+translate([+xcarriagelength/2+stickoutR+wander,0,-6.5])rotate([0,90,0])cylinder(3,1.5,2.5,center=true,$fn=5); 
+  //shoe-connectors
+    translate([-xcarriagelength/2-stickoutL+shoesize,0,-6.5])
+        minkowski(){
+            rotate([0,90,0])cylinder(4.5,2,3,center=true,$fn=6);
+        sphere(1.1,$fn=6);
+            }
+translate([+xcarriagelength/2+stickoutR+wander-shoesize,0,-6.5])
+            minkowski(){
+            rotate([0,90,0])cylinder(4.5,3,2,center=true,$fn=6);
+                sphere(1.1,$fn=6);
+            }   
+        }   
 }
 
 module LGX(){//LGX extruder side-mounted 
