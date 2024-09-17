@@ -1,0 +1,53 @@
+//Parameters
+
+gjengeavstand=6/7;
+ytregjengedia=10;
+gjengelengde=10;
+gjengedybde=0.5;
+bowdendia=4.3;
+bowdentunnel=10;
+bowdenupper=5;
+bowdenlower=3;
+resolution=20;
+
+
+$fn=resolution;
+
+difference(){
+    translate([0,0,-bowdentunnel*0.25])
+    
+   minkowski(){  
+cylinder(bowdentunnel*2.5-1,ytregjengedia,ytregjengedia+3,$fn=6,center=true);
+   cylinder(0.5,1,1,$fn=12,center=false);
+    }
+
+cylinder(gjengelengde,ytregjengedia/2-gjengedybde*2/3, ytregjengedia/2-gjengedybde*2/3,center=false);
+sphere(ytregjengedia/2-gjengedybde);
+
+for(i=[0:360/resolution:360*gjengelengde*7/6+resolution*4])
+    rotate([0,0,i])
+translate([-ytregjengedia/2,-PI*ytregjengedia/(resolution*2),i*gjengeavstand/360])
+rotate([0,91,90])
+linear_extrude(PI*ytregjengedia/resolution)
+polygon([[-gjengeavstand/2,-gjengedybde],[0,0],[gjengeavstand/2,-gjengedybde],]);
+
+
+translate([0,0,-bowdentunnel/2-ytregjengedia/2])
+difference(){
+    cylinder(bowdentunnel,bowdenupper,bowdenlower,center=true);
+    cylinder(bowdentunnel+1,bowdendia/2,bowdendia/2,center=true);
+}
+
+cylinder(bowdentunnel*4,bowdendia/2,bowdendia/2,center=true);
+
+}
+for(j=[0:120:359])rotate([180,0,j+30])
+    translate([ytregjengedia*1.6,0,-bowdentunnel])
+difference(){
+    minkowski(){
+    cylinder(6,10,8,$fn=5,center=false);
+        cylinder(0.5,1,1,$fn=12,center=false);
+    }
+    cylinder(7,2,2,center=false);
+    
+}
