@@ -1,7 +1,51 @@
-finder();
-wheel();
-foot();
+angle=45;
+
+//finder();
+//wheel();
+//foot();
+guide();
+
 $fn=20;
+module guide(){
+    difference(){
+    
+    
+    for(j=[-1:2:1]){
+        rotate([-angle,0,0])
+        translate([0,62,0])
+    cylinder(20,4,4,center=true);
+         rotate([-angle,0,0])
+     translate([0,64.5,0])
+    cube([26,4,20],center=true);
+         rotate([-angle,0,0])
+        translate([13*j,63.5,0])
+    cylinder(20,3,3,center=true);
+         rotate([-angle,0,0])
+    rotate([0,90,0])  
+    translate([0,0,14.5*j])
+    cylinder(9,10,10,center=true);
+          rotate([-angle,0,0])  
+        translate([13*j,65/2,0])
+    cube([6,63,20],center=true);
+    }
+    for(i=[-1:2:1])
+        rotate([0,0,90+i*90]){
+  rotate([0,90,0])  
+    translate([0,0,12])
+    cylinder(5,4,4,center=false);
+            translate([13,-4,0])
+    cube([4,8,25],center=false);
+        }
+         rotate([-angle,0,0])
+        translate([0,61.5,0])
+        rotate([-7,0,0])
+    cylinder(28,1.5,4,center=true);
+        finder();
+        rotate([0,90,0])  
+    translate([0,0,0])
+    cylinder(30,2.5,2.5,center=true); 
+    }    
+}
 module foot(){
     difference(){
     intersection(){
