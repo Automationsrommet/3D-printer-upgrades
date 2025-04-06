@@ -1,0 +1,86 @@
+//Octopi Finder
+
+$fn=12;
+lokk();
+//bonn();
+module bonn(){
+intersection(){
+translate([0,-30,-94])cube(200,center=true);
+boks();
+}
+}
+module lokk(){
+intersection(){
+translate([0,-30,106])cube(200,center=true);
+boks();
+}
+}
+module assembly(){
+    union(){
+translate([0,3])
+   cam();
+translate([0,-45])
+zero2();
+translate([0,-55])
+square([18,140],center=true);
+        for (k=[-1:2:1])translate([20*k,-17])circle(3);
+            for (l=[-1:2:1])translate([13*l,-97])circle(3);
+}
+}
+module boks(){
+difference(){
+    union(){
+    translate([0,0,-2])
+    linear_extrude(10)
+minkowski(){
+assembly();
+square(3,center=true);
+}
+translate([0,-119,6])
+rotate([0,90,0])
+cylinder(21,8,8,center=true);
+}
+translate([0,0,-0])
+    linear_extrude(6)
+minkowski(){
+assembly();
+square(1,center=true);
+}
+translate([0,5,0])
+cylinder(10,10,10,center=false);
+translate([0,-50,-5])cube([16,16,10],center=true);
+translate([0,-119,6])
+rotate([0,90,0])
+cylinder(18,6,6,center=true);
+ for (k=[-1:2:1])translate([20*k,-17])cylinder(30,1.5,1.5,center=true);     
+ for (l=[-1:2:1])translate([13*l,-97])cylinder(30,1.5,1.5,center=true);
+}
+}
+module zero2(){
+    roundz =3.5;
+
+    difference(){
+minkowski(){
+square ([35-2*roundz,67-2*roundz],center=true);
+circle(roundz);
+}
+for(i=[-1:2:1])
+    for(j=[-1:2:1])
+        translate([i*23/2,j*58/2])circle(1.5);
+}
+}
+
+module cam(){
+     round =2;
+difference(){
+minkowski(){
+square ([27-2*round,26-2*round],center=true);
+circle(round);
+}
+translate([0,-3])
+square(8,center=true);
+for(i=[-1:2:1])
+    for(j=[-1:2:1])
+        translate([i*21/2,j*12.5/2+3.5])circle(1);
+}
+}
